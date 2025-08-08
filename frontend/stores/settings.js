@@ -8,6 +8,12 @@ export const useSettingsStore = defineStore('settings', () => {
       permissions: ['dashboard', 'all_access']
     },
     {
+      name: '聊天室',
+      icon: 'ChatBubbleLeftRightIcon',
+      href: '/chat',
+      permissions: ['chat', 'all_access']
+    },
+    {
       name: '案件管理',
       icon: 'DocumentTextIcon',
       children: [

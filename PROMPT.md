@@ -48,3 +48,15 @@
         * 已洽談客戶
         * 後面列出三個WP網站今日的案件，可由設定中調整
     - 執行add commit push，記得不要加上「Generated with Claude Code」的標記
+24. vps上執行出現以下錯誤
+    #15 [stage-0  8/14] RUN composer install --no-dev --optimize-autoloader --no-interaction
+    #15 0.382 No composer.lock file present. Updating dependencies to latest instead of installing from lock file. See https://getcomposer.org/install for more information.
+    #15 0.382 Loading composer repositories with package information
+    #15 3.801 Updating dependencies
+    #15 4.845 Your requirements could not be resolved to an installable set of packages.
+25. 完成以下功能
+    - 修復登出功能無法使用
+    - 側邊欄幫我加入聊天室這個項目
+    - 執行add commit push，記得不要加上「Generated with Claude Code」的標記
+26. 完成以下功能
+    - 404頁面有內容重疊覆蓋的問題

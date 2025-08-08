@@ -79,14 +79,6 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Default text color removed to use theme default */
 
-/* Secondary text with better contrast */
-.text-sm {
-  color: #475569; /* Darker for small text */
-}
-
-.text-xs {
-  color: #64748b; /* Medium-dark for extra small text */
-}
 
 /* Override dark mode text colors on light background */
 .light-gradient-bg .dark\:text-white {

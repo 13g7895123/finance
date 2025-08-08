@@ -16,7 +16,8 @@
       "Bash(find:*)",
       "Bash(chmod:*)",
       "Bash(mkdir:*)",
-      "Bash(cp:*)"
+      "Bash(cp:*)",
+      "Bash(composer update:*)"
     ],
     "deny": []
   }
