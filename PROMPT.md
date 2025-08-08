@@ -19,3 +19,4 @@
     - 右側的底色請與參考的範例一樣改為亮色系
     - 幫我接上這個git，"https://github.com/13g7895123/finance.git"
     - 完成後執行add commit push，記得不要加上「Generated with Claude Code」的標記
+7. docker 建置過程出現這個錯誤，"target frontend: failed to solve: target stage "development" could not be found"
