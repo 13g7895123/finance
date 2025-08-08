@@ -36,3 +36,4 @@
     - 移除亮暗色的功能，右側請用亮色，左側請保持灰底與亮色字體的內容
     - Dashboard移除歡迎回來的部分
     - 執行add commit push，記得不要加上「Generated with Claude Code」的標記
+19. 側邊欄的字體請全部改為白色

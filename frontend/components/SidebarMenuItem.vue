@@ -4,13 +4,13 @@
       :is="item.href ? 'NuxtLink' : 'button'"
       :to="item.href"
       @click="item.href ? null : toggleItem"
-      class="w-full flex items-center px-3 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition-all duration-200 group"
+      class="w-full flex items-center px-3 py-2 text-white hover:bg-gray-700 hover:text-white rounded-lg transition-all duration-200 group"
       :class="{ 'justify-center': collapsed }"
     >
       <!-- Icon -->
       <component 
         :is="getIcon(item.icon)" 
-        class="w-5 h-5 text-gray-400 group-hover:text-white transition-colors duration-200" 
+        class="w-5 h-5 text-white group-hover:text-white transition-colors duration-200" 
       />
       
       <!-- Text and Arrow (desktop) -->
@@ -46,7 +46,7 @@
           v-for="child in item.children"
           :key="child.name"
           :to="child.href"
-          class="block px-3 py-2 text-sm text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg transition-all duration-200"
+          class="block px-3 py-2 text-sm text-white opacity-80 hover:text-white hover:opacity-100 hover:bg-gray-700 rounded-lg transition-all duration-200"
         >
           {{ child.name }}
         </NuxtLink>

@@ -30,8 +30,8 @@
       <!-- User Info & Logout -->
       <div class="p-4 border-t border-gray-600">
         <div v-if="!sidebarCollapsed && authStore.user" class="mb-3 text-center">
-          <div class="text-sm text-gray-300">{{ authStore.user.name }}</div>
-          <div class="text-xs text-gray-400">{{ getRoleDisplayName(authStore.user.role) }}</div>
+          <div class="text-sm text-white">{{ authStore.user.name }}</div>
+          <div class="text-xs text-white opacity-80">{{ getRoleDisplayName(authStore.user.role) }}</div>
         </div>
         <button
           @click="handleLogout"
@@ -76,7 +76,7 @@
         </div>
         <button
           @click="closeMobileSidebar"
-          class="p-2 hover:bg-gray-700 rounded-lg text-gray-300 hover:text-white"
+          class="p-2 hover:bg-gray-700 rounded-lg text-white hover:text-white"
         >
           <XMarkIcon class="w-5 h-5" />
         </button>
@@ -96,8 +96,8 @@
       <!-- User Info & Logout -->
       <div class="p-4 border-t border-gray-600">
         <div v-if="authStore.user" class="mb-3 text-center">
-          <div class="text-sm text-gray-300">{{ authStore.user.name }}</div>
-          <div class="text-xs text-gray-400">{{ getRoleDisplayName(authStore.user.role) }}</div>
+          <div class="text-sm text-white">{{ authStore.user.name }}</div>
+          <div class="text-xs text-white opacity-80">{{ getRoleDisplayName(authStore.user.role) }}</div>
         </div>
         <button
           @click="handleLogout"
