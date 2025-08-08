@@ -1,15 +1,5 @@
 <template>
   <div class="space-y-6">
-    <!-- Welcome Section -->
-    <div class="bg-white dark:bg-gray-800 rounded-lg-custom shadow-sm p-6">
-      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-        歡迎回來！
-      </h2>
-      <p class="text-gray-600 dark:text-gray-300">
-        這是一個現代化的後台管理系統模板，具有響應式設計和暗色模式支持。
-      </p>
-    </div>
-
     <!-- Stats Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       <div
@@ -25,6 +15,26 @@
             <p class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ stat.name }}</p>
             <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ stat.value }}</p>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WP Sites Today Cases -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div
+        v-for="site in wpSites"
+        :key="site.name"
+        class="bg-white dark:bg-gray-800 rounded-lg-custom shadow-sm p-6"
+      >
+        <div class="flex items-center justify-between mb-4">
+          <h4 class="text-lg font-semibold text-gray-900 dark:text-white">{{ site.name }}</h4>
+          <span class="text-sm text-gray-500 dark:text-gray-400">今日案件</span>
+        </div>
+        <div class="text-3xl font-bold text-primary-600 dark:text-primary-400">
+          {{ site.todayCases }}
+        </div>
+        <div class="mt-2 text-sm text-gray-600 dark:text-gray-300">
+          較昨日 {{ site.change > 0 ? '+' : '' }}{{ site.change }}
         </div>
       </div>
     </div>
@@ -66,17 +76,24 @@
 
 <script setup>
 import {
-  UsersIcon,
-  CurrencyDollarIcon,
-  ChartBarIcon,
+  ClipboardDocumentListIcon,
+  DocumentCheckIcon,
+  UserGroupIcon,
   ClockIcon
 } from '@heroicons/vue/24/outline'
 
 const stats = [
-  { name: '總用戶數', value: '1,234', icon: 'UsersIcon' },
-  { name: '總收入', value: '$12,345', icon: 'CurrencyDollarIcon' },
-  { name: '轉換率', value: '12.5%', icon: 'ChartBarIcon' },
-  { name: '平均時間', value: '2.4m', icon: 'ClockIcon' }
+  { name: '待處理案件', value: '23', icon: 'ClipboardDocumentListIcon' },
+  { name: '可送件案件', value: '15', icon: 'DocumentCheckIcon' },
+  { name: '已洽談客戶', value: '42', icon: 'UserGroupIcon' },
+  { name: '今日新增', value: '8', icon: 'ClockIcon' }
+]
+
+// WP網站今日案件數據 (可由設定中調整)
+const wpSites = [
+  { name: '熊好貸', todayCases: 12, change: 3 },
+  { name: '和潤汽車貸款', todayCases: 8, change: -1 },
+  { name: '機車貸款專家', todayCases: 15, change: 5 }
 ]
 
 const activities = [
@@ -87,13 +104,13 @@ const activities = [
 ]
 
 const iconComponents = {
-  UsersIcon,
-  CurrencyDollarIcon,
-  ChartBarIcon,
+  ClipboardDocumentListIcon,
+  DocumentCheckIcon,
+  UserGroupIcon,
   ClockIcon
 }
 
 const getIcon = (iconName) => {
-  return iconComponents[iconName] || ChartBarIcon
+  return iconComponents[iconName] || ClockIcon
 }
 </script>

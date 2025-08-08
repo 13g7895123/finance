@@ -37,3 +37,14 @@
     - Dashboard移除歡迎回來的部分
     - 執行add commit push，記得不要加上「Generated with Claude Code」的標記
 19. 側邊欄的字體請全部改為白色
+20. 確認一下後端laravel專案，我在vps上面無法啟動
+21. 幫我移除frontend/assets/main.css預設的暗色字體顏色
+22. 我現在在vps上面是直接連docker都無法啟動，幫我完整檢查laravel結構
+23. 完成以下項目
+    - 移除儀錶板的歡迎回來區塊
+    - 統計區塊幫我改成這些
+        * 待處理案件
+        * 可送件案件
+        * 已洽談客戶
+        * 後面列出三個WP網站今日的案件，可由設定中調整
+    - 執行add commit push，記得不要加上「Generated with Claude Code」的標記

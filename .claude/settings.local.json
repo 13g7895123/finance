@@ -14,7 +14,9 @@
       "Bash(git restore:*)",
       "Bash(lsof:*)",
       "Bash(find:*)",
-      "Bash(chmod:*)"
+      "Bash(chmod:*)",
+      "Bash(mkdir:*)",
+      "Bash(cp:*)"
     ],
     "deny": []
   }
