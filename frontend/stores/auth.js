@@ -185,6 +185,12 @@ export const useAuthStore = defineStore('auth', () => {
           console.error('Failed to parse saved user data:', error)
           localStorage.removeItem('admin-template-user')
         }
+      } else {
+        // 開發環境自動登入 - 使用經銷商帳號以便檢視所有功能
+        const devUser = mockUsers.value[0] // 經銷商王總
+        user.value = { ...devUser }
+        localStorage.setItem('admin-template-user', JSON.stringify(devUser))
+        console.log('開發環境自動登入:', devUser.name)
       }
     }
   }

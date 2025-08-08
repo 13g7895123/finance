@@ -63,35 +63,35 @@ const recentActivities = ref([
     description: '新客戶「台北資訊公司」已完成合約簽署',
     timestamp: new Date(Date.now() - 1000 * 60 * 30), // 30分鐘前
     icon: CheckCircleIcon,
-    colorClass: 'bg-green-100 text-green-600 dark:bg-green-900/20 dark:text-green-400'
+    colorClass: 'bg-green-100 text-green-600  '
   },
   {
     id: 2,
     description: '業務員李小姐更新了客戶「ABC企業」的案件狀態',
     timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2小時前
     icon: DocumentTextIcon,
-    colorClass: 'bg-blue-100 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400'
+    colorClass: 'bg-blue-100 text-blue-600  '
   },
   {
     id: 3,
     description: 'LINE BOT 自動處理了15個客戶諮詢',
     timestamp: new Date(Date.now() - 1000 * 60 * 60 * 4), // 4小時前
     icon: ChatBubbleLeftRightIcon,
-    colorClass: 'bg-green-100 text-green-600 dark:bg-green-900/20 dark:text-green-400'
+    colorClass: 'bg-green-100 text-green-600  '
   },
   {
     id: 4,
     description: '系統檢測到異常登入嘗試，已自動封鎖',
     timestamp: new Date(Date.now() - 1000 * 60 * 60 * 6), // 6小時前
     icon: ExclamationTriangleIcon,
-    colorClass: 'bg-red-100 text-red-600 dark:bg-red-900/20 dark:text-red-400'
+    colorClass: 'bg-red-100 text-red-600  '
   },
   {
     id: 5,
     description: '新增了3個待處理案件到系統中',
     timestamp: new Date(Date.now() - 1000 * 60 * 60 * 8), // 8小時前
     icon: PlusIcon,
-    colorClass: 'bg-yellow-100 text-yellow-600 dark:bg-yellow-900/20 dark:text-yellow-400'
+    colorClass: 'bg-yellow-100 text-yellow-600  '
   }
 ])
 
@@ -122,10 +122,7 @@ useHead({
   <div class="space-y-6">
     <!-- 頁面標題 -->
     <div class="mb-8">
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">儀表板</h1>
-      <p class="text-gray-600 dark:text-gray-400 mt-2">
-        歡迎回來，{{ authStore.user?.name }}！以下是您的業務概覽。
-      </p>
+      <h1 class="text-3xl font-bold text-gray-900">儀表板</h1>
     </div>
 
     <!-- 主要統計卡片網格 - 對應參考網站的4個主要指標 -->
@@ -182,76 +179,76 @@ useHead({
 
     <!-- 每日網站績效 -->
     <div class="mb-8">
-      <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">每日網站績效</h3>
+      <h3 class="text-xl font-semibold text-gray-900  mb-4">每日網站績效</h3>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <!-- 熊好貸 -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        <div class="card-modern p-6 fade-in">
           <div class="flex items-center justify-between mb-4">
-            <h4 class="text-lg font-medium text-gray-900 dark:text-white">{{ statsData.websitePerformance.bearLoan.name }}</h4>
-            <div class="px-3 py-1 bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300 text-sm font-medium rounded-full">
+            <h4 class="text-lg font-medium text-gray-900 ">{{ statsData.websitePerformance.bearLoan.name }}</h4>
+            <div class="px-3 py-1 bg-green-100  text-green-800 dark:text-green-300 text-sm font-medium rounded-full">
               主力網站
             </div>
           </div>
           <div class="space-y-3">
             <div class="flex justify-between">
-              <span class="text-sm text-gray-600 dark:text-gray-400">今日進件</span>
-              <span class="font-semibold text-gray-900 dark:text-white">{{ statsData.websitePerformance.bearLoan.todayApplications }} 件</span>
+              <span class="text-sm text-gray-600 ">今日進件</span>
+              <span class="font-semibold text-gray-900 ">{{ statsData.websitePerformance.bearLoan.todayApplications }} 件</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-sm text-gray-600 dark:text-gray-400">本月進件</span>
-              <span class="font-semibold text-gray-900 dark:text-white">{{ statsData.websitePerformance.bearLoan.monthlyApplications }} 件</span>
+              <span class="text-sm text-gray-600 ">本月進件</span>
+              <span class="font-semibold text-gray-900 ">{{ statsData.websitePerformance.bearLoan.monthlyApplications }} 件</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-sm text-gray-600 dark:text-gray-400">轉換率</span>
-              <span class="font-semibold text-green-600 dark:text-green-400">{{ statsData.websitePerformance.bearLoan.conversionRate }}%</span>
+              <span class="text-sm text-gray-600 ">轉換率</span>
+              <span class="font-semibold text-green-600 ">{{ statsData.websitePerformance.bearLoan.conversionRate }}%</span>
             </div>
           </div>
         </div>
 
         <!-- 網站A -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        <div class="card-modern p-6 fade-in">
           <div class="flex items-center justify-between mb-4">
-            <h4 class="text-lg font-medium text-gray-900 dark:text-white">{{ statsData.websitePerformance.websiteA.name }}</h4>
-            <div class="px-3 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300 text-sm font-medium rounded-full">
+            <h4 class="text-lg font-medium text-gray-900 ">{{ statsData.websitePerformance.websiteA.name }}</h4>
+            <div class="px-3 py-1 bg-blue-100  text-blue-800 dark:text-blue-300 text-sm font-medium rounded-full">
               次要網站
             </div>
           </div>
           <div class="space-y-3">
             <div class="flex justify-between">
-              <span class="text-sm text-gray-600 dark:text-gray-400">今日進件</span>
-              <span class="font-semibold text-gray-900 dark:text-white">{{ statsData.websitePerformance.websiteA.todayApplications }} 件</span>
+              <span class="text-sm text-gray-600 ">今日進件</span>
+              <span class="font-semibold text-gray-900 ">{{ statsData.websitePerformance.websiteA.todayApplications }} 件</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-sm text-gray-600 dark:text-gray-400">本月進件</span>
-              <span class="font-semibold text-gray-900 dark:text-white">{{ statsData.websitePerformance.websiteA.monthlyApplications }} 件</span>
+              <span class="text-sm text-gray-600 ">本月進件</span>
+              <span class="font-semibold text-gray-900 ">{{ statsData.websitePerformance.websiteA.monthlyApplications }} 件</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-sm text-gray-600 dark:text-gray-400">轉換率</span>
-              <span class="font-semibold text-blue-600 dark:text-blue-400">{{ statsData.websitePerformance.websiteA.conversionRate }}%</span>
+              <span class="text-sm text-gray-600 ">轉換率</span>
+              <span class="font-semibold text-blue-600 ">{{ statsData.websitePerformance.websiteA.conversionRate }}%</span>
             </div>
           </div>
         </div>
 
         <!-- 網站B -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        <div class="card-modern p-6 fade-in">
           <div class="flex items-center justify-between mb-4">
-            <h4 class="text-lg font-medium text-gray-900 dark:text-white">{{ statsData.websitePerformance.websiteB.name }}</h4>
-            <div class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 text-sm font-medium rounded-full">
+            <h4 class="text-lg font-medium text-gray-900 ">{{ statsData.websitePerformance.websiteB.name }}</h4>
+            <div class="px-3 py-1 bg-gray-100  text-gray-800  text-sm font-medium rounded-full">
               次要網站
             </div>
           </div>
           <div class="space-y-3">
             <div class="flex justify-between">
-              <span class="text-sm text-gray-600 dark:text-gray-400">今日進件</span>
-              <span class="font-semibold text-gray-900 dark:text-white">{{ statsData.websitePerformance.websiteB.todayApplications }} 件</span>
+              <span class="text-sm text-gray-600 ">今日進件</span>
+              <span class="font-semibold text-gray-900 ">{{ statsData.websitePerformance.websiteB.todayApplications }} 件</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-sm text-gray-600 dark:text-gray-400">本月進件</span>
-              <span class="font-semibold text-gray-900 dark:text-white">{{ statsData.websitePerformance.websiteB.monthlyApplications }} 件</span>
+              <span class="text-sm text-gray-600 ">本月進件</span>
+              <span class="font-semibold text-gray-900 ">{{ statsData.websitePerformance.websiteB.monthlyApplications }} 件</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-sm text-gray-600 dark:text-gray-400">轉換率</span>
-              <span class="font-semibold text-gray-600 dark:text-gray-400">{{ statsData.websitePerformance.websiteB.conversionRate }}%</span>
+              <span class="text-sm text-gray-600 ">轉換率</span>
+              <span class="font-semibold text-gray-600 ">{{ statsData.websitePerformance.websiteB.conversionRate }}%</span>
             </div>
           </div>
         </div>
@@ -325,55 +322,55 @@ useHead({
     </div>
 
     <!-- 快速行動區域 -->
-    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-      <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">快速行動</h3>
+    <div class="card-modern p-6 fade-in">
+      <h3 class="text-xl font-semibold text-gray-900  mb-4">快速行動</h3>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <NuxtLink 
           v-if="authStore.hasPermission('customer_management')"
           to="/cases/pending"
-          class="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200"
+          class="flex items-center p-4 bg-gray-50  rounded-lg btn-interactive"
         >
-          <div class="p-2 bg-yellow-100 dark:bg-yellow-900/20 rounded-lg mr-3">
-            <DocumentTextIcon class="w-6 h-6 text-yellow-600 dark:text-yellow-400" />
+          <div class="p-2 bg-yellow-100  rounded-lg mr-3">
+            <DocumentTextIcon class="w-6 h-6 text-yellow-600 " />
           </div>
           <div>
-            <div class="font-medium text-gray-900 dark:text-white">處理案件</div>
-            <div class="text-sm text-gray-500 dark:text-gray-400">查看待處理案件</div>
+            <div class="font-medium text-gray-900 ">處理案件</div>
+            <div class="text-sm text-gray-500 ">查看待處理案件</div>
           </div>
         </NuxtLink>
 
         <NuxtLink 
           to="/chat"
-          class="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200"
+          class="flex items-center p-4 bg-gray-50  rounded-lg btn-interactive"
         >
-          <div class="p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg mr-3">
-            <ChatBubbleLeftRightIcon class="w-6 h-6 text-blue-600 dark:text-blue-400" />
+          <div class="p-2 bg-blue-100  rounded-lg mr-3">
+            <ChatBubbleLeftRightIcon class="w-6 h-6 text-blue-600 " />
           </div>
           <div>
-            <div class="font-medium text-gray-900 dark:text-white">聊天室</div>
-            <div class="text-sm text-gray-500 dark:text-gray-400">查看最新訊息</div>
+            <div class="font-medium text-gray-900 ">聊天室</div>
+            <div class="text-sm text-gray-500 ">查看最新訊息</div>
           </div>
         </NuxtLink>
 
         <NuxtLink 
           v-if="authStore.hasPermission('reports')"
           to="/reports/sales"
-          class="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200"
+          class="flex items-center p-4 bg-gray-50  rounded-lg btn-interactive"
         >
-          <div class="p-2 bg-green-100 dark:bg-green-900/20 rounded-lg mr-3">
-            <ChartBarIcon class="w-6 h-6 text-green-600 dark:text-green-400" />
+          <div class="p-2 bg-green-100  rounded-lg mr-3">
+            <ChartBarIcon class="w-6 h-6 text-green-600 " />
           </div>
           <div>
-            <div class="font-medium text-gray-900 dark:text-white">查看報表</div>
-            <div class="text-sm text-gray-500 dark:text-gray-400">業績統計分析</div>
+            <div class="font-medium text-gray-900 ">查看報表</div>
+            <div class="text-sm text-gray-500 ">業績統計分析</div>
           </div>
         </NuxtLink>
       </div>
     </div>
 
     <!-- 最近活動 (僅經銷商和管理員可見) -->
-    <div v-if="authStore.hasPermission('all_access') || authStore.hasPermission('customer_management')" class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-      <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">最近活動</h3>
+    <div v-if="authStore.hasPermission('all_access') || authStore.hasPermission('customer_management')" class="card-modern p-6 fade-in">
+      <h3 class="text-xl font-semibold text-gray-900  mb-4">最近活動</h3>
       <div class="space-y-4">
         <div v-for="activity in recentActivities" :key="activity.id" class="flex items-start space-x-3">
           <div class="flex-shrink-0">
@@ -382,8 +379,8 @@ useHead({
             </div>
           </div>
           <div class="flex-1 min-w-0">
-            <p class="text-sm text-gray-900 dark:text-white">{{ activity.description }}</p>
-            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ formatTime(activity.timestamp) }}</p>
+            <p class="text-sm text-gray-900 ">{{ activity.description }}</p>
+            <p class="text-xs text-gray-500  mt-1">{{ formatTime(activity.timestamp) }}</p>
           </div>
         </div>
       </div>

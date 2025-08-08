@@ -1,14 +1,14 @@
 <template>
-  <div class="min-h-screen bg-white dark:bg-gray-900">
+  <div class="min-h-screen bg-white">
     <AppSidebar />
     <div 
-      class="min-h-screen flex flex-col main-content-area"
+      class="min-h-screen flex flex-col main-content-area light-gradient-bg"
       :class="{
         'sidebar-collapsed': sidebarCollapsed
       }"
     >
       <AppNavbar />
-      <main class="flex-1 p-6 overflow-auto bg-gray-50">
+      <main class="flex-1 p-6 overflow-auto">
         <slot />
       </main>
       <!-- Footer已隱藏 -->

@@ -28,6 +28,139 @@ body {
   line-height: 1.6;
 }
 
+/* Light gradient background for main content area - matching reference website */
+.light-gradient-bg {
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+}
+
+/* Content cards and sections should have white/off-white backgrounds */
+.content-card, .card, .bg-white {
+  background: #ffffff;
+}
+
+.content-section {
+  background: #fafafa;
+}
+
+/* Ensure dashboard cards and stat cards have proper white backgrounds */
+.bg-white,
+[class*="bg-white"],
+.stat-card,
+.dashboard-card {
+  background: #ffffff !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+/* High contrast text colors for better readability on light background */
+.text-gray-900 {
+  color: #0f172a !important; /* Much darker slate color */
+}
+
+.text-gray-800 {
+  color: #1e293b !important; /* Darker slate color */
+}
+
+.text-gray-700 {
+  color: #334155 !important; /* Dark gray */
+}
+
+.text-gray-600 {
+  color: #475569 !important; /* Medium-dark gray */
+}
+
+.text-gray-500 {
+  color: #64748b !important; /* Medium gray */
+}
+
+/* Main content text contrast improvements */
+h1, h2, h3, h4, h5, h6 {
+  color: #0f172a !important; /* Very dark for headers */
+}
+
+p, span, div {
+  color: #1e293b; /* Dark for body text */
+}
+
+/* Secondary text with better contrast */
+.text-sm {
+  color: #475569; /* Darker for small text */
+}
+
+.text-xs {
+  color: #64748b; /* Medium-dark for extra small text */
+}
+
+/* Override dark mode text colors on light background */
+.light-gradient-bg .dark\:text-white {
+  color: #0f172a !important;
+}
+
+.light-gradient-bg .dark\:text-gray-400 {
+  color: #475569 !important;
+}
+
+.light-gradient-bg .dark\:text-gray-300 {
+  color: #64748b !important;
+}
+
+/* Modern card styling with high contrast text */
+.card-modern {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Stat cards and dashboard elements with high contrast */
+.card-modern .text-gray-900,
+.bg-white .text-gray-900 {
+  color: #0f172a !important;
+}
+
+.card-modern .text-gray-600,
+.bg-white .text-gray-600 {
+  color: #475569 !important;
+}
+
+.card-modern .text-gray-500,
+.bg-white .text-gray-500 {
+  color: #64748b !important;
+}
+
+/* Ensure all text in cards has proper contrast */
+.card-modern h1, .card-modern h2, .card-modern h3, .card-modern h4, .card-modern h5, .card-modern h6 {
+  color: #0f172a !important;
+}
+
+.card-modern p, .card-modern span, .card-modern div {
+  color: #1e293b !important;
+}
+
+/* Navigation bar text contrast improvements */
+header .text-gray-900,
+header .dark\:text-white {
+  color: #0f172a !important;
+}
+
+header .text-gray-500,
+header .dark\:text-gray-400 {
+  color: #64748b !important;
+}
+
+header .text-gray-700,
+header .dark\:text-gray-300 {
+  color: #334155 !important;
+}
+
+/* Navbar sits on white background, ensure high contrast */
+header h1 {
+  color: #0f172a !important;
+}
+
+header nav {
+  color: #475569 !important;
+}
+
 .rounded-custom {
   border-radius: 12px;
 }

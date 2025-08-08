@@ -1,11 +1,11 @@
 <template>
-  <header class="h-16 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 flex items-center justify-between">
+  <header class="h-16 bg-white border-b border-gray-200 px-6 flex items-center justify-between">
     <!-- Left side - Mobile hamburger or Breadcrumb -->
     <div class="flex items-center space-x-4">
       <!-- Mobile hamburger button -->
       <button
         @click="toggleMobileSidebar"
-        class="lg:hidden p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
+        class="lg:hidden p-2 hover:bg-gray-100 rounded-lg"
       >
         <Bars3Icon class="w-6 h-6" />
       </button>
@@ -13,12 +13,12 @@
       <!-- Breadcrumb (Desktop only) -->
       <div class="hidden lg:flex items-center space-x-4">
         <!-- Current Page Title -->
-        <h1 class="text-xl font-bold text-gray-900 dark:text-white">
+        <h1 class="text-xl font-bold text-gray-900">
           {{ currentPageTitle }}
         </h1>
         
         <!-- Separator -->
-        <div class="h-6 w-px bg-gray-300 dark:bg-gray-600"></div>
+        <div class="h-6 w-px bg-gray-300"></div>
         
         <!-- Breadcrumb Navigation -->
         <nav class="flex" aria-label="Breadcrumb">
@@ -26,7 +26,7 @@
             <li>
               <NuxtLink
                 to="/"
-                class="text-gray-500 dark:text-gray-400 hover:text-primary-500 transition-colors duration-200"
+                class="text-gray-500 hover:text-primary-500 transition-colors duration-200"
               >
                 {{ t('common.home') }}
               </NuxtLink>
@@ -36,13 +36,13 @@
               <NuxtLink
                 v-if="item.href && index < breadcrumbItems.length - 1"
                 :to="item.href"
-                class="text-gray-500 dark:text-gray-400 hover:text-primary-500 transition-colors duration-200"
+                class="text-gray-500 hover:text-primary-500 transition-colors duration-200"
               >
                 {{ item.name }}
               </NuxtLink>
               <span
                 v-else
-                class="text-gray-700 dark:text-gray-300 font-medium"
+                class="text-gray-700 font-medium"
               >
                 {{ item.name }}
               </span>
@@ -57,7 +57,7 @@
       <!-- Search -->
       <button
         @click="toggleSearch"
-        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200 relative"
+        class="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200 relative"
       >
         <MagnifyingGlassIcon class="w-5 h-5" />
       </button>
@@ -66,7 +66,7 @@
       <div class="relative">
         <button
           @click="toggleLanguage"
-          class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200"
+          class="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200"
         >
           <GlobeAltIcon class="w-5 h-5" />
         </button>
@@ -82,13 +82,13 @@
         >
           <div
             v-if="showLanguage"
-            class="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50"
+            class="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50"
           >
             <button
               v-for="lang in languages"
               :key="lang.code"
               @click="selectLanguage(lang)"
-              class="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+              class="w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors duration-200"
             >
               <span class="text-lg mr-2">{{ lang.flag }}</span>
               {{ lang.name }}
@@ -97,20 +97,12 @@
         </transition>
       </div>
 
-      <!-- Theme toggle -->
-      <button
-        @click="toggleTheme"
-        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200"
-      >
-        <SunIcon v-if="isDark" class="w-5 h-5" />
-        <MoonIcon v-else class="w-5 h-5" />
-      </button>
 
       <!-- Notifications -->
       <div class="relative">
         <button
           @click="toggleNotifications"
-          class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200 relative"
+          class="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200 relative"
         >
           <BellIcon class="w-5 h-5" />
           <span 
@@ -132,10 +124,10 @@
         >
           <div
             v-if="showNotifications"
-            class="absolute right-0 top-full mt-2 w-96 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50"
+            class="absolute right-0 top-full mt-2 w-96 bg-white  rounded-lg shadow-lg border border-gray-200  z-50"
           >
-            <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
-              <h3 class="font-semibold text-gray-900 dark:text-white">{{ t('notifications.title') }}</h3>
+            <div class="p-4 border-b border-gray-200  flex items-center justify-between">
+              <h3 class="font-semibold text-gray-900 ">{{ t('notifications.title') }}</h3>
               <div class="flex items-center space-x-2">
                 <button
                   @click="markAllAsRead"
@@ -149,7 +141,7 @@
               <div
                 v-for="notification in recentNotifications"
                 :key="notification.id"
-                class="p-4 border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200 cursor-pointer"
+                class="p-4 border-b border-gray-100  hover:bg-gray-50  transition-colors duration-200 cursor-pointer"
                 :class="{ 'bg-blue-50 dark:bg-blue-900/20': !notification.read }"
                 @click="markAsRead(notification.id)"
               >
@@ -157,19 +149,19 @@
                   <div 
                     class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center"
                     :class="{
-                      'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400': notification.priority === 'high',
-                      'bg-yellow-100 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400': notification.priority === 'medium',
-                      'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400': notification.priority === 'low'
+                      'bg-red-100 text-red-600  ': notification.priority === 'high',
+                      'bg-yellow-100 text-yellow-600  ': notification.priority === 'medium',
+                      'bg-blue-100 text-blue-600  ': notification.priority === 'low'
                     }"
                   >
                     <component :is="getNotificationIcon(notification.icon)" class="w-4 h-4" />
                   </div>
                   <div class="flex-1 min-w-0">
-                    <p class="text-sm font-medium text-gray-900 dark:text-white">
+                    <p class="text-sm font-medium text-gray-900 ">
                       {{ typeof notification.title === 'string' && notification.title.includes('.') ? t(notification.title) : notification.title }}
                     </p>
-                    <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">{{ notification.message }}</p>
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ notificationsStore.getTimeAgo(notification.time) }}</p>
+                    <p class="text-sm text-gray-600  mt-1">{{ notification.message }}</p>
+                    <p class="text-xs text-gray-500  mt-1">{{ notificationsStore.getTimeAgo(notification.time) }}</p>
                   </div>
                   <div class="flex-shrink-0">
                     <div
@@ -181,15 +173,15 @@
               </div>
               <div
                 v-if="recentNotifications.length === 0"
-                class="p-8 text-center text-gray-500 dark:text-gray-400"
+                class="p-8 text-center text-gray-500 "
               >
                 {{ t('notifications.no_notifications') }}
               </div>
             </div>
-            <div class="p-3 border-t border-gray-200 dark:border-gray-700">
+            <div class="p-3 border-t border-gray-200 ">
               <button
                 @click="clearReadNotifications"
-                class="w-full text-center text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200"
+                class="w-full text-center text-sm text-gray-500  hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200"
               >
                 {{ t('notifications.clear_all') }}
               </button>
@@ -202,7 +194,7 @@
       <div class="relative">
         <button
           @click="toggleUserMenu"
-          class="flex items-center space-x-2 p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200"
+          class="flex items-center space-x-2 p-1 hover:bg-gray-100  rounded-lg transition-colors duration-200"
         >
           <img
             src="https://ui-avatars.com/api/?name=Admin+User&background=6366f1&color=fff"
@@ -223,26 +215,26 @@
         >
           <div
             v-if="showUserMenu"
-            class="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50"
+            class="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50"
           >
             <NuxtLink
               to="/profile"
-              class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+              class="block px-4 py-2 text-sm text-gray-700  hover:bg-gray-100  transition-colors duration-200"
               @click="closeUserMenu"
             >
               {{ t('common.profile') }}
             </NuxtLink>
             <NuxtLink
               to="/settings"
-              class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+              class="block px-4 py-2 text-sm text-gray-700  hover:bg-gray-100  transition-colors duration-200"
               @click="closeUserMenu"
             >
               {{ t('common.settings') }}
             </NuxtLink>
-            <hr class="my-1 border-gray-200 dark:border-gray-700" />
+            <hr class="my-1 border-gray-200 " />
             <button
               @click="logout"
-              class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+              class="w-full text-left px-4 py-2 text-sm text-gray-700  hover:bg-gray-100  transition-colors duration-200"
             >
               {{ t('common.logout') }}
             </button>
@@ -266,7 +258,7 @@
         @click="closeSearch"
       >
         <div
-          class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-lg mx-4"
+          class="bg-white  rounded-lg shadow-xl w-full max-w-lg mx-4"
           @click.stop
         >
           <div class="p-4">
@@ -275,7 +267,7 @@
               v-model="searchQuery"
               type="text"
               :placeholder="t('common.search') + '...'"
-              class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+              class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent  "
             />
           </div>
         </div>
@@ -289,8 +281,6 @@ import {
   Bars3Icon,
   MagnifyingGlassIcon,
   GlobeAltIcon,
-  SunIcon,
-  MoonIcon,
   BellIcon,
   ChevronDownIcon,
   ChevronRightIcon,
@@ -309,9 +299,6 @@ const { toggleMobileSidebar } = sidebarStore
 
 const notificationsStore = useNotificationsStore()
 const { recentNotifications, unreadCount, markAsRead, markAllAsRead, clearReadNotifications } = notificationsStore
-
-const colorMode = useColorMode()
-const isDark = computed(() => colorMode.value === 'dark')
 
 // Breadcrumb logic
 const pageTitle = computed(() => {
@@ -405,9 +392,6 @@ const selectLanguage = (lang) => {
   showLanguage.value = false
 }
 
-const toggleTheme = () => {
-  colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
-}
 
 const toggleNotifications = () => {
   showNotifications.value = !showNotifications.value

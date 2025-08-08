@@ -35,7 +35,7 @@
         </div>
         <button
           @click="handleLogout"
-          class="w-full flex items-center px-3 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition-colors duration-200"
+          class="w-full flex items-center px-3 py-2 text-red-200 bg-red-900/20 hover:bg-red-600 hover:text-white rounded-lg transition-all duration-200 border border-red-700/50 font-medium"
           :class="{ 'justify-center': sidebarCollapsed }"
         >
           <ArrowRightOnRectangleIcon class="w-5 h-5" />
@@ -43,8 +43,8 @@
         </button>
       </div>
 
-      <!-- Collapse Toggle -->
-      <button
+      <!-- Collapse Toggle - Hidden -->
+      <!-- <button
         @click="toggleSidebar"
         class="absolute -right-3 top-6 w-6 h-6 bg-[#2c2c2c] border border-gray-600 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors duration-200"
       >
@@ -52,7 +52,7 @@
           class="w-4 h-4 text-gray-300 transition-transform duration-200"
           :class="{ 'rotate-180': sidebarCollapsed }"
         />
-      </button>
+      </button> -->
     </aside>
 
     <!-- Mobile Sidebar Overlay -->
@@ -101,7 +101,7 @@
         </div>
         <button
           @click="handleLogout"
-          class="w-full flex items-center px-3 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition-colors duration-200"
+          class="w-full flex items-center px-3 py-2 text-red-200 bg-red-900/20 hover:bg-red-600 hover:text-white rounded-lg transition-all duration-200 border border-red-700/50 font-medium"
         >
           <ArrowRightOnRectangleIcon class="w-5 h-5" />
           <span class="ml-3">登出</span>
@@ -117,6 +117,9 @@ import {
   XMarkIcon,
   ArrowRightOnRectangleIcon
 } from '@heroicons/vue/24/outline'
+
+// Explicitly import the SidebarMenuItem component
+import SidebarMenuItem from './SidebarMenuItem.vue'
 
 const sidebarStore = useSidebarStore()
 const { sidebarCollapsed, sidebarMobileOpen } = storeToRefs(sidebarStore)

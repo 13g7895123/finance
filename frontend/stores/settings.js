@@ -32,16 +32,16 @@ export const useSettingsStore = defineStore('settings', () => {
       permissions: ['customer_management', 'personal_customers', 'all_access']
     },
     {
-      name: '聊天室',
-      icon: 'ChatBubbleLeftRightIcon',
-      href: '/chat',
-      permissions: ['chat', 'all_access']
-    },
-    {
-      name: '銀行交涉紀錄',
-      icon: 'BuildingLibraryIcon',
-      href: '/bank-records',
-      permissions: ['all_access'] // 只有經銷商/公司高層可存取
+      name: '網站設定',
+      icon: 'CogIcon',
+      children: [
+        { name: '網站名稱管理', href: '/settings/websites', permissions: ['settings', 'all_access'] },
+        { name: '系統設定', href: '/settings/system', permissions: ['settings', 'all_access'] },
+        { name: '用戶管理', href: '/settings/users', permissions: ['user_management', 'all_access'] },
+        { name: '權限管理', href: '/settings/permissions', permissions: ['all_access'] },
+        { name: 'LINE 整合', href: '/settings/line', permissions: ['settings', 'all_access'] }
+      ],
+      permissions: ['settings', 'user_management', 'all_access']
     },
     {
       name: '統計報表',
@@ -55,18 +55,6 @@ export const useSettingsStore = defineStore('settings', () => {
         { name: '會計報表', href: '/reports/accounting', permissions: ['reports', 'all_access'] }
       ],
       permissions: ['reports', 'all_access']
-    },
-    {
-      name: '網站設定',
-      icon: 'CogIcon',
-      children: [
-        { name: '網站名稱管理', href: '/settings/websites', permissions: ['settings', 'all_access'] },
-        { name: '系統設定', href: '/settings/system', permissions: ['settings', 'all_access'] },
-        { name: '用戶管理', href: '/settings/users', permissions: ['user_management', 'all_access'] },
-        { name: '權限管理', href: '/settings/permissions', permissions: ['all_access'] },
-        { name: 'LINE 整合', href: '/settings/line', permissions: ['settings', 'all_access'] }
-      ],
-      permissions: ['settings', 'user_management', 'all_access']
     }
   ])
   
