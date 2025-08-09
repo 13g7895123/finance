@@ -32,7 +32,10 @@
       "Bash(npm run dev:*)",
       "Bash(npm install:*)",
       "Bash(rm:*)",
-      "Bash(npx nuxi:*)"
+      "Bash(npx nuxi:*)",
+      "Bash(php artisan:*)",
+      "Bash(/c/xampp/php/php.exe artisan key:generate)",
+      "Bash(where php)"
     ],
     "deny": []
   }

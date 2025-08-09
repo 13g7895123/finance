@@ -3,213 +3,228 @@ name: 融資貸款CRM系統 - 持續部署
 on:
   push:
     branches: [ main, develop ]
-  pull_request:
-    branches: [ main ]
+  # pull_request:
+  #   branches: [ main ]
 
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: finance-crm
+# env:
+#   REGISTRY: ghcr.io
+#   IMAGE_NAME: finance-crm
 
 jobs:
-  test:
-    name: 測試階段
-    runs-on: ubuntu-latest
+  # test:
+  #   name: 測試階段
+  #   runs-on: ubuntu-latest
     
-    steps:
-    - name: 取出程式碼
-      uses: actions/checkout@v4
+  #   steps:
+  #   - name: 取出程式碼
+  #     uses: actions/checkout@v4
 
-    - name: 設定 Node.js 18
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-        cache-dependency-path: frontend/package-lock.json
+  #   - name: 設定 Node.js 18
+  #     uses: actions/setup-node@v4
+  #     with:
+  #       node-version: '18'
+  #       cache: 'npm'
+  #       cache-dependency-path: frontend/package-lock.json
 
-    - name: 安裝前端依賴套件
-      working-directory: ./frontend
-      run: npm ci
+  #   - name: 安裝前端依賴套件
+  #     working-directory: ./frontend
+  #     run: npm ci
 
-    - name: 前端代碼檢查
-      working-directory: ./frontend
-      run: npm run lint
+  #   - name: 前端代碼檢查
+  #     working-directory: ./frontend
+  #     run: npm run lint
 
-    - name: 前端測試
-      working-directory: ./frontend
-      run: npm run test
+  #   - name: 前端測試
+  #     working-directory: ./frontend
+  #     run: npm run test
 
-    - name: 設定 PHP 8.2
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.2'
-        extensions: mbstring, xml, ctype, iconv, intl, pdo_mysql, dom, filter, gd, json, zip
+  #   - name: 設定 PHP 8.2
+  #     uses: shivammathur/setup-php@v2
+  #     with:
+  #       php-version: '8.2'
+  #       extensions: mbstring, xml, ctype, iconv, intl, pdo_mysql, dom, filter, gd, json, zip
 
-    - name: 複製環境設定檔
-      working-directory: ./backend
-      run: cp .env.example .env
+  #   - name: 複製環境設定檔
+  #     working-directory: ./backend
+  #     run: cp .env.example .env
 
-    - name: 安裝後端依賴套件
-      working-directory: ./backend
-      run: composer install --prefer-dist --no-progress --no-suggest
+  #   - name: 安裝後端依賴套件
+  #     working-directory: ./backend
+  #     run: composer install --prefer-dist --no-progress --no-suggest
 
-    - name: 生成應用程式金鑰
-      working-directory: ./backend
-      run: php artisan key:generate
+  #   - name: 生成應用程式金鑰
+  #     working-directory: ./backend
+  #     run: php artisan key:generate
 
-    - name: 執行資料庫遷移
-      working-directory: ./backend
-      run: php artisan migrate --force
+  #   - name: 執行資料庫遷移
+  #     working-directory: ./backend
+  #     run: php artisan migrate --force
 
-    - name: 後端測試
-      working-directory: ./backend
-      run: php artisan test
+  #   - name: 後端測試
+  #     working-directory: ./backend
+  #     run: php artisan test
 
-  build:
-    name: 建構映像檔
-    runs-on: ubuntu-latest
-    needs: test
-    if: github.event_name == 'push'
+  # build:
+  #   name: 建構映像檔
+  #   runs-on: ubuntu-latest
+  #   needs: test
+  #   if: github.event_name == 'push'
     
-    strategy:
-      matrix:
-        service: [frontend, backend]
+  #   strategy:
+  #     matrix:
+  #       service: [frontend, backend]
     
-    steps:
-    - name: 取出程式碼
-      uses: actions/checkout@v4
+  #   steps:
+  #   - name: 取出程式碼
+  #     uses: actions/checkout@v4
 
-    - name: 設定 Docker Buildx
-      uses: docker/setup-buildx-action@v3
+  #   - name: 設定 Docker Buildx
+  #     uses: docker/setup-buildx-action@v3
 
-    - name: 登入容器註冊表
-      uses: docker/login-action@v3
-      with:
-        registry: ${{ env.REGISTRY }}
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+  #   - name: 登入容器註冊表
+  #     uses: docker/login-action@v3
+  #     with:
+  #       registry: ${{ env.REGISTRY }}
+  #       username: ${{ github.actor }}
+  #       password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: 提取映像檔標籤和標記
-      id: meta
-      uses: docker/metadata-action@v5
-      with:
-        images: ${{ env.REGISTRY }}/${{ github.repository }}/${{ matrix.service }}
-        tags: |
-          type=ref,event=branch
-          type=ref,event=pr
-          type=sha,prefix={{branch}}-
-          type=raw,value=latest,enable={{is_default_branch}}
+  #   - name: 提取映像檔標籤和標記
+  #     id: meta
+  #     uses: docker/metadata-action@v5
+  #     with:
+  #       images: ${{ env.REGISTRY }}/${{ github.repository }}/${{ matrix.service }}
+  #       tags: |
+  #         type=ref,event=branch
+  #         type=ref,event=pr
+  #         type=sha,prefix={{branch}}-
+  #         type=raw,value=latest,enable={{is_default_branch}}
 
-    - name: 建構並推送 Docker 映像檔
-      uses: docker/build-push-action@v5
-      with:
-        context: ./${{ matrix.service }}
-        platforms: linux/amd64,linux/arm64
-        push: true
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
+  #   - name: 建構並推送 Docker 映像檔
+  #     uses: docker/build-push-action@v5
+  #     with:
+  #       context: ./${{ matrix.service }}
+  #       platforms: linux/amd64,linux/arm64
+  #       push: true
+  #       tags: ${{ steps.meta.outputs.tags }}
+  #       labels: ${{ steps.meta.outputs.labels }}
+  #       cache-from: type=gha
+  #       cache-to: type=gha,mode=max
 
-  deploy-staging:
-    name: 部署到測試環境
-    runs-on: ubuntu-latest
-    needs: build
-    if: github.ref == 'refs/heads/develop'
-    environment: staging
+  # deploy-staging:
+  #   name: 部署到測試環境
+  #   runs-on: ubuntu-latest
+  #   needs: build
+  #   if: github.ref == 'refs/heads/develop'
+  #   environment: staging
     
-    steps:
-    - name: 取出程式碼
-      uses: actions/checkout@v4
+  #   steps:
+  #   - name: 取出程式碼
+  #     uses: actions/checkout@v4
 
-    - name: 部署到測試伺服器
-      uses: appleboy/ssh-action@v1.0.0
-      with:
-        host: ${{ secrets.STAGING_HOST }}
-        username: ${{ secrets.STAGING_USER }}
-        key: ${{ secrets.STAGING_SSH_KEY }}
-        port: ${{ secrets.STAGING_PORT }}
-        script: |
-          cd /var/www/finance-crm-staging
-          git pull origin develop
-          docker-compose down
-          docker-compose pull
-          docker-compose up -d
-          docker-compose exec -T backend php artisan migrate --force
-          docker-compose exec -T backend php artisan config:cache
-          docker-compose exec -T backend php artisan route:cache
+  #   - name: 部署到測試伺服器
+  #     uses: appleboy/ssh-action@v1.0.0
+  #     with:
+  #       host: ${{ secrets.STAGING_HOST }}
+  #       username: ${{ secrets.STAGING_USER }}
+  #       key: ${{ secrets.STAGING_SSH_KEY }}
+  #       port: ${{ secrets.STAGING_PORT }}
+  #       script: |
+  #         cd /var/www/finance-crm-staging
+  #         git pull origin develop
+  #         docker-compose down
+  #         docker-compose pull
+  #         docker-compose up -d
+  #         docker-compose exec -T backend php artisan migrate --force
+  #         docker-compose exec -T backend php artisan config:cache
+  #         docker-compose exec -T backend php artisan route:cache
 
   deploy-production:
     name: 部署到生產環境
     runs-on: ubuntu-latest
-    needs: build
-    if: github.ref == 'refs/heads/main'
+    # needs: build
+    # if: github.ref == 'refs/heads/main'
     environment: production
     
     steps:
     - name: 取出程式碼
       uses: actions/checkout@v4
 
-    - name: 建立資料庫備份
-      uses: appleboy/ssh-action@v1.0.0
-      with:
-        host: ${{ secrets.PRODUCTION_HOST }}
-        username: ${{ secrets.PRODUCTION_USER }}
-        key: ${{ secrets.PRODUCTION_SSH_KEY }}
-        port: ${{ secrets.PRODUCTION_PORT }}
-        script: |
-          cd /var/www/finance-crm
-          docker-compose exec -T mysql mysqldump -u root -p${{ secrets.DB_ROOT_PASSWORD }} finance_crm > backup_$(date +%Y%m%d_%H%M%S).sql
+    # - name: 建立資料庫備份
+    #   uses: appleboy/ssh-action@v1.0.0
+    #   with:
+    #     host: ${{ secrets.PRODUCTION_HOST }}
+    #     username: ${{ secrets.PRODUCTION_USER }}
+    #     key: ${{ secrets.PRODUCTION_SSH_KEY }}
+    #     port: ${{ secrets.PRODUCTION_PORT }}
+    #     script: |
+    #       cd /var/www/finance-crm
+    #       docker-compose exec -T mysql mysqldump -u root -p${{ secrets.DB_ROOT_PASSWORD }} finance_crm > backup_$(date +%Y%m%d_%H%M%S).sql
 
-    - name: 部署到生產伺服器
-      uses: appleboy/ssh-action@v1.0.0
-      with:
-        host: ${{ secrets.PRODUCTION_HOST }}
-        username: ${{ secrets.PRODUCTION_USER }}
-        key: ${{ secrets.PRODUCTION_SSH_KEY }}
-        port: ${{ secrets.PRODUCTION_PORT }}
-        script: |
-          cd /var/www/finance-crm
-          git pull origin main
-          docker-compose down
-          docker-compose pull
-          docker-compose up -d
-          docker-compose exec -T backend php artisan migrate --force
-          docker-compose exec -T backend php artisan config:cache
-          docker-compose exec -T backend php artisan route:cache
-          docker-compose exec -T backend php artisan queue:restart
+    # - name: 部署到生產伺服器
+    #   uses: appleboy/ssh-action@v1.0.0
+    #   with:
+    #     host: ${{ secrets.PRODUCTION_HOST }}
+    #     username: ${{ secrets.PRODUCTION_USER }}
+    #     key: ${{ secrets.PRODUCTION_SSH_KEY }}
+    #     port: ${{ secrets.PRODUCTION_PORT }}
+    #     script: |
+    #       cd /var/www/finance-crm
+    #       git pull origin main
+    #       docker-compose down
+    #       docker-compose pull
+    #       docker-compose up -d
+    #       docker-compose exec -T backend php artisan migrate --force
+    #       docker-compose exec -T backend php artisan config:cache
+    #       docker-compose exec -T backend php artisan route:cache
+    #       docker-compose exec -T backend php artisan queue:restart
 
-    - name: 執行健康檢查
-      run: |
-        sleep 30
-        curl -f ${{ secrets.PRODUCTION_URL }}/health || exit 1
+    # - name: 執行健康檢查
+    #   run: |
+    #     sleep 30
+    #     curl -f ${{ secrets.PRODUCTION_URL }}/health || exit 1
 
-    - name: 通知部署結果
-      uses: 8398a7/action-slack@v3
-      if: always()
-      with:
-        status: ${{ job.status }}
-        channel: '#deployments'
-        webhook_url: ${{ secrets.SLACK_WEBHOOK }}
-        fields: repo,message,commit,author,action,eventName,ref,workflow
+    # - name: 通知部署結果
+    #   uses: 8398a7/action-slack@v3
+    #   if: always()
+    #   with:
+    #     status: ${{ job.status }}
+    #     channel: '#deployments'
+    #     webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+    #     fields: repo,message,commit,author,action,eventName,ref,workflow
 
-  security-scan:
-    name: 安全性掃描
-    runs-on: ubuntu-latest
-    needs: build
+  # security-scan:
+  #   name: 安全性掃描
+  #   runs-on: ubuntu-latest
+  #   needs: build
     
-    steps:
-    - name: 取出程式碼
-      uses: actions/checkout@v4
+  #   steps:
+  #   - name: 取出程式碼
+  #     uses: actions/checkout@v4
 
-    - name: 執行 Trivy 安全性掃描
-      uses: aquasecurity/trivy-action@master
-      with:
-        image-ref: ${{ env.REGISTRY }}/${{ github.repository }}/backend:latest
-        format: 'sarif'
-        output: 'trivy-results.sarif'
+  #   - name: 執行 Trivy 安全性掃描
+  #     uses: aquasecurity/trivy-action@master
+  #     with:
+  #       image-ref: ${{ env.REGISTRY }}/${{ github.repository }}/backend:latest
+  #       format: 'sarif'
+  #       output: 'trivy-results.sarif'
 
-    - name: 上傳 Trivy 掃描結果到 GitHub Security
-      uses: github/codeql-action/upload-sarif@v2
-      if: always()
-      with:
-        sarif_file: 'trivy-results.sarif'
+  #   - name: 上傳 Trivy 掃描結果到 GitHub Security
+  #     uses: github/codeql-action/upload-sarif@v2
+  #     if: always()
+  #     with:
+  #       sarif_file: 'trivy-results.sarif'
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p 8022 -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy via SSH
+        run: |
+          ssh -p 8022 -i ~/.ssh/id_ed25519 -o ServerAliveInterval=60 -o ServerAliveCountMax=3 ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+            cd ~/project/bonus/finance
+            git pull
+            docker compose up -d --build frontend
+            docker compose exec backend php artisan migrate --force
+          EOF
