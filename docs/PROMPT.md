@@ -76,3 +76,7 @@
     - 修復以下錯誤
         * TypeError: can't access property "toString", value is undefined
         * TypeError: vnode is null
+39. 完成以下項目
+    - 側邊欄如果展開時超過高度，需要出現可拖曳的功能
+    - 調整前端的卡面資訊，請移除所有頁面卡片有出現黑色邊框的部分
+    - 另外，除了側邊欄以外的右側內容顏色請用亮色配置，幫我以這個規則調整包含datatable的顯示，不要看到深灰色

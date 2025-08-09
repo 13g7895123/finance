@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-shadow duration-200">
+  <div class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow duration-200">
     <!-- 標題和圖示 -->
     <div class="flex items-center justify-between mb-4">
       <div class="flex items-center space-x-3">
@@ -65,12 +65,12 @@
     </div>
 
     <!-- 額外資訊或行動按鈕 -->
-    <div v-if="$slots.footer" class="border-t border-gray-100 dark:border-gray-700 pt-4 mt-4">
+    <div v-if="$slots.footer" class="pt-4 mt-4">
       <slot name="footer"></slot>
     </div>
     
     <!-- 預設的查看詳情連結 -->
-    <div v-else-if="link" class="border-t border-gray-100 dark:border-gray-700 pt-4 mt-4">
+    <div v-else-if="link" class="pt-4 mt-4">
       <NuxtLink 
         :to="link"
         class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium flex items-center space-x-1"

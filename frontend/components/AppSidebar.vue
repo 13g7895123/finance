@@ -2,10 +2,12 @@
   <div>
     <!-- Desktop Sidebar -->
     <aside
+      ref="sidebar"
       class="fixed top-0 left-0 h-full bg-[#2c2c2c] shadow-lg transition-all duration-300 z-40 hidden lg:block flex flex-col"
       :class="[
-        sidebarCollapsed ? 'w-20' : 'w-70'
+        sidebarCollapsed ? 'w-20' : ''
       ]"
+      :style="sidebarCollapsed ? {} : { width: sidebarWidth + 'px' }"
     >
       <!-- Logo/Brand -->
       <div class="h-16 flex items-center justify-center border-b border-gray-600">
@@ -43,16 +45,13 @@
         </button>
       </div>
 
-      <!-- Collapse Toggle - Hidden -->
-      <!-- <button
-        @click="toggleSidebar"
-        class="absolute -right-3 top-6 w-6 h-6 bg-[#2c2c2c] border border-gray-600 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors duration-200"
-      >
-        <ChevronLeftIcon 
-          class="w-4 h-4 text-gray-300 transition-transform duration-200"
-          :class="{ 'rotate-180': sidebarCollapsed }"
-        />
-      </button> -->
+      <!-- Resize Handle -->
+      <div
+        v-if="!sidebarCollapsed"
+        ref="resizeHandle"
+        class="absolute right-0 top-0 bottom-0 w-1 bg-gray-600 hover:bg-gray-500 cursor-col-resize opacity-0 hover:opacity-100 transition-opacity duration-200"
+        @mousedown="startResize"
+      ></div>
     </aside>
 
     <!-- Mobile Sidebar Overlay -->
@@ -132,9 +131,18 @@ const authStore = useAuthStore()
 
 // 客戶端狀態標記
 const isClient = ref(false)
+const sidebar = ref(null)
+const resizeHandle = ref(null)
+const sidebarWidth = ref(280) // 預設寬度
+const isDragging = ref(false)
 
 onMounted(() => {
   isClient.value = true
+  // 從 localStorage 載入儲存的寬度
+  const savedWidth = localStorage.getItem('sidebar-width')
+  if (savedWidth) {
+    sidebarWidth.value = parseInt(savedWidth)
+  }
 })
 
 // 權限過濾選單項目
@@ -187,6 +195,34 @@ const getRoleDisplayName = (role) => {
 // 登出處理
 const handleLogout = () => {
   authStore.logout()
+}
+
+// 拖拽調整寬度功能
+const startResize = (e) => {
+  isDragging.value = true
+  document.addEventListener('mousemove', handleResize)
+  document.addEventListener('mouseup', stopResize)
+  document.body.style.cursor = 'col-resize'
+  document.body.style.userSelect = 'none'
+  e.preventDefault()
+}
+
+const handleResize = (e) => {
+  if (!isDragging.value) return
+  
+  const newWidth = Math.max(200, Math.min(400, e.clientX)) // 限制寬度在200-400px之間
+  sidebarWidth.value = newWidth
+}
+
+const stopResize = () => {
+  isDragging.value = false
+  document.removeEventListener('mousemove', handleResize)
+  document.removeEventListener('mouseup', stopResize)
+  document.body.style.cursor = ''
+  document.body.style.userSelect = ''
+  
+  // 儲存寬度到 localStorage
+  localStorage.setItem('sidebar-width', sidebarWidth.value.toString())
 }
 </script>
 

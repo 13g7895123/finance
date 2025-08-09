@@ -3,8 +3,8 @@
     <!-- 頁面標題 -->
     <div class="flex items-center justify-between">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">銀行交涉紀錄</h1>
-        <p class="text-gray-600 dark:text-gray-400 mt-2">
+        <h1 class="text-3xl font-bold text-gray-900 ">銀行交涉紀錄</h1>
+        <p class="text-gray-600  mt-2">
           僅限經銷商/公司高層查看的敏感金融交涉記錄
         </p>
       </div>
@@ -20,12 +20,12 @@
     </div>
 
     <!-- 警告提示 -->
-    <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
+    <div class="bg-yellow-50 rounded-lg p-4">
       <div class="flex items-start space-x-3">
-        <ExclamationTriangleIcon class="w-6 h-6 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-0.5" />
+        <ExclamationTriangleIcon class="w-6 h-6 text-yellow-600 flex-shrink-0 mt-0.5" />
         <div>
-          <h3 class="text-sm font-medium text-yellow-800 dark:text-yellow-300">機密資料</h3>
-          <p class="text-sm text-yellow-700 dark:text-yellow-400 mt-1">
+          <h3 class="text-sm font-medium text-yellow-800">機密資料</h3>
+          <p class="text-sm text-yellow-700 mt-1">
             此頁面包含敏感的銀行交涉資訊，請妥善保管，不得外洩或與非授權人員分享。
           </p>
         </div>
@@ -74,10 +74,10 @@
     </div>
 
     <!-- 交涉記錄列表 -->
-    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-      <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+    <div class="bg-white rounded-xl shadow-sm">
+      <div class="p-6">
         <div class="flex items-center justify-between">
-          <h2 class="text-xl font-semibold text-gray-900 dark:text-white">交涉記錄</h2>
+          <h2 class="text-xl font-semibold text-gray-900">交涉記錄</h2>
           
           <div class="flex items-center space-x-4">
             <!-- 搜尋框 -->
@@ -86,7 +86,7 @@
                 v-model="searchQuery"
                 type="text"
                 placeholder="搜尋銀行或案件..."
-                class="pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500"
+                class="pl-10 pr-4 py-2 border-gray-300 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500"
               />
               <MagnifyingGlassIcon class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
             </div>
@@ -94,7 +94,7 @@
             <!-- 狀態篩選 -->
             <select
               v-model="statusFilter"
-              class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500"
+              class="px-4 py-2 border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-500"
             >
               <option value="">所有狀態</option>
               <option value="pending">處理中</option>
@@ -107,49 +107,49 @@
 
       <div class="overflow-x-auto">
         <table class="w-full">
-          <thead class="bg-gray-50 dark:bg-gray-700">
+          <thead class="bg-gray-50">
             <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 銀行資訊
               </th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider">
                 案件編號
               </th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider">
                 交涉內容
               </th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider">
                 狀態
               </th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider">
                 交涉時間
               </th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider">
                 負責人
               </th>
-              <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th class="px-6 py-3 text-right text-xs font-medium text-gray-500  uppercase tracking-wider">
                 操作
               </th>
             </tr>
           </thead>
-          <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+          <tbody class="bg-white  divide-y divide-gray-200 ">
             <tr 
               v-for="record in filteredRecords" 
               :key="record.id"
-              class="hover:bg-gray-50 dark:hover:bg-gray-700"
+              class="hover:bg-gray-50 "
             >
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="flex items-center">
                   <div class="flex-shrink-0 w-10 h-10">
-                    <div class="w-10 h-10 bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center">
-                      <BuildingLibraryIcon class="w-6 h-6 text-red-600 dark:text-red-400" />
+                    <div class="w-10 h-10 bg-red-100  rounded-full flex items-center justify-center">
+                      <BuildingLibraryIcon class="w-6 h-6 text-red-600 " />
                     </div>
                   </div>
                   <div class="ml-4">
-                    <div class="text-sm font-medium text-gray-900 dark:text-white">
+                    <div class="text-sm font-medium text-gray-900 ">
                       {{ record.bankName }}
                     </div>
-                    <div class="text-sm text-gray-500 dark:text-gray-400">
+                    <div class="text-sm text-gray-500 ">
                       {{ record.bankBranch }}
                     </div>
                   </div>
@@ -157,16 +157,16 @@
               </td>
               
               <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm font-mono text-gray-900 dark:text-white">
+                <div class="text-sm font-mono text-gray-900 ">
                   {{ record.caseNumber }}
                 </div>
               </td>
               
               <td class="px-6 py-4">
-                <div class="text-sm text-gray-900 dark:text-white max-w-xs truncate">
+                <div class="text-sm text-gray-900  max-w-xs truncate">
                   {{ record.subject }}
                 </div>
-                <div class="text-sm text-gray-500 dark:text-gray-400">
+                <div class="text-sm text-gray-500 ">
                   金額: {{ formatCurrency(record.amount) }}
                 </div>
               </td>
@@ -180,19 +180,19 @@
                 </span>
               </td>
               
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 ">
                 {{ formatDate(record.negotiationDate) }}
               </td>
               
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 ">
                 {{ record.responsible }}
               </td>
               
               <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                <button class="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300">
+                <button class="text-red-600  hover:text-red-800 ">
                   查看詳情
                 </button>
-                <button class="text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-300">
+                <button class="text-gray-600  hover:text-gray-800 ">
                   編輯
                 </button>
               </td>
@@ -312,9 +312,9 @@ const filteredRecords = computed(() => {
 // 狀態樣式
 const getStatusClass = (status) => {
   const classes = {
-    'success': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
-    'failed': 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300',
-    'pending': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'
+    'success': 'bg-green-100 text-green-800',
+    'failed': 'bg-red-100 text-red-800',
+    'pending': 'bg-yellow-100 text-yellow-800'
   }
   return classes[status] || classes.pending
 }
