@@ -54,13 +54,13 @@
 
     <!-- Right side icons -->
     <div class="flex items-center space-x-3">
-      <!-- Search -->
-      <button
+      <!-- Search (Hidden) -->
+      <!-- <button
         @click="toggleSearch"
         class="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200 relative"
       >
         <MagnifyingGlassIcon class="w-5 h-5" />
-      </button>
+      </button> -->
 
       <!-- Language -->
       <div class="relative">
