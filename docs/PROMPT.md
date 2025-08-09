@@ -95,3 +95,4 @@
 45. 執行add commit push，記得不要加上「Generated with Claude Code」的標記
 46. 完成以下功能
     - 後台的用戶管理、權限管理，先幫我整理出對應的call api路徑到conposable，並確認後台是否存在對應的API，有的話確認是否可以用，可以用的話直接串接，無法的話進行API生成
+    - 執行point 45

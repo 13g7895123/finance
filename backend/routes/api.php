@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\HealthController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\Api\PermissionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,6 +77,12 @@ Route::middleware(['auth:api'])->group(function () {
         Route::delete('/users/{user}/roles/{role}', [UserController::class, 'removeRole']);
         Route::get('/roles', [UserController::class, 'getRoles']);
         Route::get('/users/stats/overview', [UserController::class, 'getStats']);
+        
+        // Permission Management
+        Route::get('/permissions', [PermissionController::class, 'index']);
+        Route::get('/permissions/category/{category}', [PermissionController::class, 'getByCategory']);
+        Route::get('/users/{user}/roles', [PermissionController::class, 'getUserRoles']);
+        Route::get('/roles/{role}/permissions', [PermissionController::class, 'getRolePermissions']);
     });
     
     // Reports (Manager, Admin and Executive only)
