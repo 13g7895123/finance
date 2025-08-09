@@ -20,7 +20,15 @@
       "Bash(composer update:*)",
       "Bash(composer install:*)",
       "Bash(docker-compose up:*)",
-      "Bash(docker-compose:*)"
+      "Bash(docker-compose:*)",
+      "Bash(docker logs:*)",
+      "Bash(docker image rm:*)",
+      "Bash(docker build:*)",
+      "Bash(docker tag:*)",
+      "Bash(docker run:*)",
+      "Bash(curl:*)",
+      "Bash(docker inspect:*)",
+      "Bash(docker image:*)"
     ],
     "deny": []
   }
