@@ -13,6 +13,8 @@
       </main>
       <!-- Footer已隱藏 -->
     </div>
+    
+    <!-- 調試組件已移除 -->
   </div>
 </template>
 

@@ -1,17 +1,41 @@
 <template>
   <div class="relative">
-    <component
-      :is="item.href ? 'NuxtLink' : 'button'"
+    <!-- 使用 NuxtLink 包裝所有帶 href 的項目 -->
+    <NuxtLink
+      v-if="item.href"
       :to="item.href"
-      @click="item.href ? null : toggleItem"
+      class="w-full flex items-center px-3 py-2 text-white hover:bg-gray-700 hover:text-white rounded-lg transition-all duration-200 group"
+      :class="{ 'justify-center': collapsed }"
+      @click="handleNavigation"
+    >
+      <!-- Icon -->
+      <component 
+        v-if="getIcon(item.icon) && typeof getIcon(item.icon) === 'function'"
+        :is="getIcon(item.icon)" 
+        class="w-5 h-5 text-white group-hover:text-white transition-colors duration-200" 
+      />
+      <ChartBarIcon v-else class="w-5 h-5 text-white group-hover:text-white transition-colors duration-200" />
+      
+      <!-- Text (desktop) -->
+      <div v-if="!collapsed" class="flex items-center justify-between flex-1 ml-3">
+        <span class="font-medium">{{ item.name }}</span>
+      </div>
+    </NuxtLink>
+    
+    <!-- 只有子項目才使用 button -->
+    <button
+      v-else
+      @click="toggleItem"
       class="w-full flex items-center px-3 py-2 text-white hover:bg-gray-700 hover:text-white rounded-lg transition-all duration-200 group"
       :class="{ 'justify-center': collapsed }"
     >
       <!-- Icon -->
       <component 
+        v-if="getIcon(item.icon) && typeof getIcon(item.icon) === 'function'"
         :is="getIcon(item.icon)" 
         class="w-5 h-5 text-white group-hover:text-white transition-colors duration-200" 
       />
+      <ChartBarIcon v-else class="w-5 h-5 text-white group-hover:text-white transition-colors duration-200" />
       
       <!-- Text and Arrow (desktop) -->
       <div v-if="!collapsed" class="flex items-center justify-between flex-1 ml-3">
@@ -22,7 +46,7 @@
           :class="{ 'rotate-180': isExpanded }"
         />
       </div>
-    </component>
+    </button>
 
     <!-- Tooltip for collapsed state -->
     <div
@@ -87,6 +111,11 @@ const toggleItem = () => {
   } else if (props.item.children && props.collapsed) {
     // For collapsed state, we could show a popover menu here in the future
   }
+}
+
+const handleNavigation = () => {
+  // 確保導航正常執行，可以在這裡添加額外的邏輯
+  console.log('Navigating to:', props.item.href)
 }
 
 const iconComponents = {

@@ -8,10 +8,12 @@
           :class="iconBgClass"
         >
           <component 
+            v-if="getIcon(icon) && typeof getIcon(icon) === 'function'"
             :is="getIcon(icon)" 
             class="w-6 h-6"
             :class="iconClass"
           />
+          <ChartBarIcon v-else class="w-6 h-6" :class="iconClass" />
         </div>
         <div>
           <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ title }}</h3>
@@ -22,10 +24,12 @@
       <!-- 趨勢指示器 -->
       <div v-if="trend" class="flex items-center space-x-1">
         <component 
+          v-if="getTrendIcon() && typeof getTrendIcon() === 'function'"
           :is="getTrendIcon()" 
           class="w-4 h-4"
           :class="getTrendClass()"
         />
+        <MinusIcon v-else class="w-4 h-4" :class="getTrendClass()" />
         <span 
           class="text-sm font-medium"
           :class="getTrendClass()"
@@ -192,19 +196,24 @@ const iconClass = computed(() => {
 const formattedValue = computed(() => {
   const value = props.value
   
+  // 如果值為 undefined 或 null，返回預設值
+  if (value === undefined || value === null) {
+    return '0'
+  }
+  
   switch (props.format) {
     case 'currency':
       return new Intl.NumberFormat('zh-TW', {
         style: 'currency',
         currency: 'TWD',
         minimumFractionDigits: 0
-      }).format(Number(value))
+      }).format(Number(value) || 0)
     
     case 'percentage':
       return `${value}%`
     
     case 'number':
-      return new Intl.NumberFormat('zh-TW').format(Number(value))
+      return new Intl.NumberFormat('zh-TW').format(Number(value) || 0)
     
     default:
       return value.toString()

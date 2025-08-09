@@ -28,7 +28,11 @@
       "Bash(docker run:*)",
       "Bash(curl:*)",
       "Bash(docker inspect:*)",
-      "Bash(docker image:*)"
+      "Bash(docker image:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npm install:*)",
+      "Bash(rm:*)",
+      "Bash(npx nuxi:*)"
     ],
     "deny": []
   }

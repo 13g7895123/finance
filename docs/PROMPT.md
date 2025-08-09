@@ -64,3 +64,15 @@
 28. 目前docker啟用報了這個錯誤，failed to solve: process "/bin/sh -c composer install --no-dev --optimize-autoloader --no-interaction" did not complete successfully: exit code: 1
 29. 一樣有錯誤，target backend: failed to solve: process "/bin/sh -c composer install --no-dev --optimize-autoloader --no-interaction" did not complete successfully: exit code: 1
 30. 目前docker compose在建置前端的時候，使用的是dev的方式，需要調整成正式用node啟用的方式，完成後執行add commit push，記得不要加上「Generated with Claude Code」的標記
+31. 幫我看完完整前端專案，修復側邊欄點下去完全沒反應的問題
+32. 你是一個專業且資深的nuxt前端工程師，請配合frontend agent檢修側邊欄選項點下去沒有內容沒有跳轉的問題
+33. 404的按鈕點下去會壞掉，並且有元件重疊的問題
+34. 你修完直接500錯誤整個壞掉了
+35. 請幫我確認側邊欄的功能是否都正常，我點儀表板就直接壞掉了
+36. 我點儀表板就出現這個錯誤了，"Uncaught (in promise) TypeError: can't access property "type", instance is null"，請幫我測試全部的側邊欄，確保不會出問題，另外navbar的語系與通知幫我改用深色顯示，如果是因為main.css導致的請移除main.css裡面的code
+37. 請偵測載入後的console，一堆warning錯誤，請完整修復
+38. 完成以下項目
+    - 側邊欄如果打開超過高度，需要出現scroll bar
+    - 修復以下錯誤
+        * TypeError: can't access property "toString", value is undefined
+        * TypeError: vnode is null

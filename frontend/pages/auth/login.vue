@@ -134,28 +134,25 @@ definePageMeta({
   middleware: 'guest'
 })
 
-const { t } = useI18n()
+// Removed i18n usage to prevent warnings
+// const { t } = useI18n()
 const authStore = useAuthStore()
 
-// Provide fallback translations if i18n is not working
+// Static translations instead of i18n
 const safeT = (key) => {
-  try {
-    return t(key)
-  } catch {
-    const fallbacks = {
-      'auth.login_title': '登入帳戶',
-      'auth.login_subtitle': '請輸入您的帳戶資訊',
-      'auth.username_email': '用戶名或郵箱',
-      'auth.username_email_placeholder': '請輸入用戶名或郵箱',
-      'auth.password': '密碼',
-      'auth.password_placeholder': '請輸入密碼',
-      'auth.login': '登入',
-      'auth.logging_in': '登入中...',
-      'auth.no_account': '還沒有帳戶？',
-      'auth.register': '立即註冊'
-    }
-    return fallbacks[key] || key
+  const translations = {
+    'auth.login_title': '登入帳戶',
+    'auth.login_subtitle': '請輸入您的帳戶資訊',
+    'auth.username_email': '用戶名或郵箱',
+    'auth.username_email_placeholder': '請輸入用戶名或郵箱',
+    'auth.password': '密碼',
+    'auth.password_placeholder': '請輸入密碼',
+    'auth.login': '登入',
+    'auth.logging_in': '登入中...',
+    'auth.no_account': '還沒有帳戶？',
+    'auth.register': '立即註冊'
   }
+  return translations[key] || key
 }
 
 const form = ref({

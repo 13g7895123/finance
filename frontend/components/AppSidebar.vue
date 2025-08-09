@@ -18,7 +18,7 @@
       </div>
 
       <!-- Navigation Menu -->
-      <nav class="flex-1 px-4 py-6 space-y-2">
+      <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
         <SidebarMenuItem
           v-for="item in filteredMenuItems"
           :key="item.name"
@@ -29,7 +29,7 @@
 
       <!-- User Info & Logout -->
       <div class="p-4 border-t border-gray-600">
-        <div v-if="!sidebarCollapsed && authStore.user" class="mb-3 text-center">
+        <div v-if="!sidebarCollapsed && isClient && authStore.user" class="mb-3 text-center">
           <div class="text-sm text-white">{{ authStore.user.name }}</div>
           <div class="text-xs text-white opacity-80">{{ getRoleDisplayName(authStore.user.role) }}</div>
         </div>
@@ -83,7 +83,7 @@
       </div>
 
       <!-- Navigation Menu -->
-      <nav class="flex-1 px-4 py-6 space-y-2">
+      <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
         <SidebarMenuItem
           v-for="item in filteredMenuItems"
           :key="item.name"
@@ -95,7 +95,7 @@
 
       <!-- User Info & Logout -->
       <div class="p-4 border-t border-gray-600">
-        <div v-if="authStore.user" class="mb-3 text-center">
+        <div v-if="isClient && authStore.user" class="mb-3 text-center">
           <div class="text-sm text-white">{{ authStore.user.name }}</div>
           <div class="text-xs text-white opacity-80">{{ getRoleDisplayName(authStore.user.role) }}</div>
         </div>
@@ -130,8 +130,20 @@ const { sidebarMenuItems } = storeToRefs(settingsStore)
 
 const authStore = useAuthStore()
 
+// 客戶端狀態標記
+const isClient = ref(false)
+
+onMounted(() => {
+  isClient.value = true
+})
+
 // 權限過濾選單項目
 const filteredMenuItems = computed(() => {
+  // 在 SSR 階段或用戶未登入時，返回空陣列
+  if (!isClient.value || !authStore.isLoggedIn || !authStore.user) {
+    return []
+  }
+  
   return sidebarMenuItems.value.filter(item => {
     // 檢查項目是否有權限要求
     if (item.permissions && item.permissions.length > 0) {
@@ -153,6 +165,12 @@ const filteredMenuItems = computed(() => {
       }
     }
     return item
+  }).filter(item => {
+    // 移除沒有子項目的父項目（如果所有子項目都被過濾掉）
+    if (item.children && item.children.length === 0 && !item.href) {
+      return false
+    }
+    return true
   })
 })
 

@@ -9,7 +9,8 @@
       >
         <div class="flex items-center">
           <div class="p-3 rounded-lg bg-primary-100 dark:bg-primary-900">
-            <component :is="getIcon(stat.icon)" class="w-6 h-6 text-primary-600 dark:text-primary-400" />
+            <component v-if="getIcon(stat.icon)" :is="getIcon(stat.icon)" class="w-6 h-6 text-primary-600 dark:text-primary-400" />
+            <ClockIcon v-else class="w-6 h-6 text-primary-600 dark:text-primary-400" />
           </div>
           <div class="ml-4">
             <p class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ stat.name }}</p>
@@ -81,6 +82,15 @@ import {
   UserGroupIcon,
   ClockIcon
 } from '@heroicons/vue/24/outline'
+
+definePageMeta({
+  middleware: 'auth'
+})
+
+// 客戶端自動重定向到儀表板
+onMounted(() => {
+  navigateTo('/dashboard/analytics')
+})
 
 const stats = [
   { name: '待處理案件', value: '23', icon: 'ClipboardDocumentListIcon' },

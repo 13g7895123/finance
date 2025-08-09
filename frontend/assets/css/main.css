@@ -124,30 +124,8 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Default card text color removed to use theme default */
 
-/* Navigation bar text contrast improvements */
-header .text-gray-900,
-header .dark\:text-white {
-  color: #0f172a !important;
-}
-
-header .text-gray-500,
-header .dark\:text-gray-400 {
-  color: #64748b !important;
-}
-
-header .text-gray-700,
-header .dark\:text-gray-300 {
-  color: #334155 !important;
-}
-
-/* Navbar sits on white background, ensure high contrast */
-header h1 {
-  color: #0f172a !important;
-}
-
-header nav {
-  color: #475569 !important;
-}
+/* Navigation bar text contrast improvements - removed conflicting styles */
+/* Removed header color overrides to allow component-specific styling */
 
 .rounded-custom {
   border-radius: 12px;

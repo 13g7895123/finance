@@ -13,6 +13,9 @@ import {
   UsersIcon
 } from '@heroicons/vue/24/outline'
 
+// 明確匯入 StatsCard 組件
+import StatsCard from '~/components/StatsCard.vue'
+
 definePageMeta({
   middleware: 'auth'
 })
@@ -53,7 +56,10 @@ const statsData = ref({
   approvalRate: 78.5,
   disbursementAmount: 18750000,
   todayMessages: 47,
-  botInteractions: 128
+  botInteractions: 128,
+  // 新增缺少的數據
+  newClients: 42,
+  conversionRate: 68.3
 })
 
 // 最近活動數據
@@ -375,7 +381,8 @@ useHead({
         <div v-for="activity in recentActivities" :key="activity.id" class="flex items-start space-x-3">
           <div class="flex-shrink-0">
             <div :class="`p-2 rounded-lg ${activity.colorClass}`">
-              <component :is="activity.icon" class="w-5 h-5" />
+              <component v-if="activity.icon && typeof activity.icon === 'function'" :is="activity.icon" class="w-5 h-5" />
+              <DocumentTextIcon v-else class="w-5 h-5" />
             </div>
           </div>
           <div class="flex-1 min-w-0">

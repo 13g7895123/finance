@@ -28,7 +28,7 @@
                 to="/"
                 class="text-gray-500 hover:text-primary-500 transition-colors duration-200"
               >
-                {{ t('common.home') }}
+                首頁
               </NuxtLink>
             </li>
             <li v-for="(item, index) in breadcrumbItems" :key="index" class="flex items-center">
@@ -66,9 +66,9 @@
       <div class="relative">
         <button
           @click="toggleLanguage"
-          class="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200"
+          class="p-2 hover:bg-gray-700 rounded-lg transition-colors duration-200"
         >
-          <GlobeAltIcon class="w-5 h-5" />
+          <GlobeAltIcon class="w-5 h-5 text-gray-700" />
         </button>
         
         <!-- Language Dropdown -->
@@ -82,13 +82,13 @@
         >
           <div
             v-if="showLanguage"
-            class="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50"
+            class="absolute right-0 top-full mt-2 w-48 bg-gray-800 rounded-lg shadow-lg border border-gray-600 py-2 z-50"
           >
             <button
               v-for="lang in languages"
               :key="lang.code"
               @click="selectLanguage(lang)"
-              class="w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors duration-200"
+              class="w-full text-left px-4 py-2 hover:bg-gray-700 transition-colors duration-200 text-white"
             >
               <span class="text-lg mr-2">{{ lang.flag }}</span>
               {{ lang.name }}
@@ -102,9 +102,9 @@
       <div class="relative">
         <button
           @click="toggleNotifications"
-          class="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200 relative"
+          class="p-2 hover:bg-gray-700 rounded-lg transition-colors duration-200 relative"
         >
-          <BellIcon class="w-5 h-5" />
+          <BellIcon class="w-5 h-5 text-gray-700" />
           <span 
             v-if="unreadCount > 0"
             class="absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-red-500 rounded-full flex items-center justify-center text-xs text-white font-bold"
@@ -124,16 +124,16 @@
         >
           <div
             v-if="showNotifications"
-            class="absolute right-0 top-full mt-2 w-96 bg-white  rounded-lg shadow-lg border border-gray-200  z-50"
+            class="absolute right-0 top-full mt-2 w-96 bg-gray-800 rounded-lg shadow-lg border border-gray-600 z-50"
           >
-            <div class="p-4 border-b border-gray-200  flex items-center justify-between">
-              <h3 class="font-semibold text-gray-900 ">{{ t('notifications.title') }}</h3>
+            <div class="p-4 border-b border-gray-600 flex items-center justify-between">
+              <h3 class="font-semibold text-white">通知</h3>
               <div class="flex items-center space-x-2">
                 <button
                   @click="markAllAsRead"
                   class="text-xs text-primary-500 hover:text-primary-600 transition-colors duration-200"
                 >
-                  {{ t('notifications.mark_all_read') }}
+                  全部標記已讀
                 </button>
               </div>
             </div>
@@ -141,8 +141,8 @@
               <div
                 v-for="notification in recentNotifications"
                 :key="notification.id"
-                class="p-4 border-b border-gray-100  hover:bg-gray-50  transition-colors duration-200 cursor-pointer"
-                :class="{ 'bg-blue-50 dark:bg-blue-900/20': !notification.read }"
+                class="p-4 border-b border-gray-600 hover:bg-gray-700 transition-colors duration-200 cursor-pointer"
+                :class="{ 'bg-gray-700': !notification.read }"
                 @click="markAsRead(notification.id)"
               >
                 <div class="flex items-start space-x-3">
@@ -157,11 +157,11 @@
                     <component :is="getNotificationIcon(notification.icon)" class="w-4 h-4" />
                   </div>
                   <div class="flex-1 min-w-0">
-                    <p class="text-sm font-medium text-gray-900 ">
-                      {{ typeof notification.title === 'string' && notification.title.includes('.') ? t(notification.title) : notification.title }}
+                    <p class="text-sm font-medium text-white">
+                      {{ notification.title }}
                     </p>
-                    <p class="text-sm text-gray-600  mt-1">{{ notification.message }}</p>
-                    <p class="text-xs text-gray-500  mt-1">{{ notificationsStore.getTimeAgo(notification.time) }}</p>
+                    <p class="text-sm text-gray-300 mt-1">{{ notification.message }}</p>
+                    <p class="text-xs text-gray-400 mt-1">{{ notificationsStore.getTimeAgo(notification.time) }}</p>
                   </div>
                   <div class="flex-shrink-0">
                     <div
@@ -173,17 +173,17 @@
               </div>
               <div
                 v-if="recentNotifications.length === 0"
-                class="p-8 text-center text-gray-500 "
+                class="p-8 text-center text-gray-400"
               >
-                {{ t('notifications.no_notifications') }}
+                暫無通知
               </div>
             </div>
-            <div class="p-3 border-t border-gray-200 ">
+            <div class="p-3 border-t border-gray-600">
               <button
                 @click="clearReadNotifications"
-                class="w-full text-center text-sm text-gray-500  hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200"
+                class="w-full text-center text-sm text-gray-400 hover:text-gray-200 transition-colors duration-200"
               >
-                {{ t('notifications.clear_all') }}
+                清除所有
               </button>
             </div>
           </div>
@@ -222,21 +222,21 @@
               class="block px-4 py-2 text-sm text-gray-700  hover:bg-gray-100  transition-colors duration-200"
               @click="closeUserMenu"
             >
-              {{ t('common.profile') }}
+              個人資料
             </NuxtLink>
             <NuxtLink
               to="/settings"
               class="block px-4 py-2 text-sm text-gray-700  hover:bg-gray-100  transition-colors duration-200"
               @click="closeUserMenu"
             >
-              {{ t('common.settings') }}
+              設定
             </NuxtLink>
             <hr class="my-1 border-gray-200 " />
             <button
               @click="logout"
               class="w-full text-left px-4 py-2 text-sm text-gray-700  hover:bg-gray-100  transition-colors duration-200"
             >
-              {{ t('common.logout') }}
+              登出
             </button>
           </div>
         </transition>
@@ -266,7 +266,7 @@
               ref="searchInput"
               v-model="searchQuery"
               type="text"
-              :placeholder="t('common.search') + '...'"
+              placeholder="搜尋..."
               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent  "
             />
           </div>
@@ -292,7 +292,8 @@ import {
   WrenchScrewdriverIcon
 } from '@heroicons/vue/24/outline'
 
-const { t, locale, locales } = useI18n()
+// Removed i18n usage to prevent warnings
+// const { t, locale, locales } = useI18n()
 const route = useRoute()
 const sidebarStore = useSidebarStore()
 const { toggleMobileSidebar } = sidebarStore
@@ -303,22 +304,35 @@ const { recentNotifications, unreadCount, markAsRead, markAllAsRead, clearReadNo
 // Breadcrumb logic
 const pageTitle = computed(() => {
   const titles = {
-    '/': t('nav.dashboard'),
-    '/dashboard': t('nav.dashboard'),
-    '/dashboard/analytics': t('nav.analytics'),
-    '/dashboard/crm': t('nav.crm'),
-    '/dashboard/ecommerce': t('nav.ecommerce'),
-    '/settings': t('nav.settings'),
-    '/settings/general': t('nav.general_settings'),
-    '/settings/theme': t('nav.theme_settings'),
-    '/settings/ui': t('nav.ui_settings'),
-    '/settings/users': t('nav.user_management'),
-    '/help': t('nav.help_center'),
-    '/help/faq': t('nav.faq'),
-    '/help/support': t('nav.support'),
-    '/help/docs': t('nav.docs')
+    '/': '儀表板',
+    '/dashboard': '儀表板',
+    '/dashboard/analytics': '數據分析',
+    '/cases/pending': '待處理案件',
+    '/cases/submittable': '可送件案件',
+    '/cases/progress': '進行中案件',
+    '/cases/completed': '已完成案件',
+    '/cases/negotiated': '協商客戶',
+    '/sales/customers': '客戶資料',
+    '/sales/tracking': '追蹤管理',
+    '/sales/applications': '進件資料',
+    '/sales/reports': '銷售報表',
+    '/sales/statistics': '業績統計',
+    '/settings': '設定',
+    '/settings/websites': '網站名稱管理',
+    '/settings/system': '系統設定',
+    '/settings/users': '用戶管理',
+    '/settings/permissions': '權限管理',
+    '/settings/line': 'LINE 整合',
+    '/reports/website-performance': '每日網站績效',
+    '/reports/applications': '進件統計',
+    '/reports/disbursement': '撥款統計',
+    '/reports/sales': '銷售分析',
+    '/reports/customers': '客戶分析',
+    '/reports/accounting': '會計報表',
+    '/chat': '聊天室',
+    '/bank-records': '銀行交涉紀錄'
   }
-  return titles[route.path] || 'Page'
+  return titles[route.path] || '頁面'
 })
 
 const currentPageTitle = computed(() => pageTitle.value)
@@ -332,19 +346,35 @@ const breadcrumbItems = computed(() => {
     currentPath += '/' + pathSegments[i]
     
     const segmentTitles = {
-      '/dashboard': t('nav.dashboards'),
-      '/dashboard/analytics': t('nav.analytics'),
-      '/dashboard/crm': t('nav.crm'),
-      '/dashboard/ecommerce': t('nav.ecommerce'),
-      '/settings': t('nav.settings'),
-      '/settings/general': t('nav.general_settings'),
-      '/settings/theme': t('nav.theme_settings'),
-      '/settings/ui': t('nav.ui_settings'),
-      '/settings/users': t('nav.user_management'),
-      '/help': t('nav.help_center'),
-      '/help/faq': t('nav.faq'),
-      '/help/support': t('nav.support'),
-      '/help/docs': t('nav.docs')
+      '/dashboard': '儀表板',
+      '/dashboard/analytics': '數據分析',
+      '/cases': '案件管理',
+      '/cases/pending': '待處理案件',
+      '/cases/submittable': '可送件案件',
+      '/cases/progress': '進行中案件',
+      '/cases/completed': '已完成案件',
+      '/cases/negotiated': '協商客戶',
+      '/sales': '業務管理',
+      '/sales/customers': '客戶資料',
+      '/sales/tracking': '追蹤管理',
+      '/sales/applications': '進件資料',
+      '/sales/reports': '銷售報表',
+      '/sales/statistics': '業績統計',
+      '/settings': '設定',
+      '/settings/websites': '網站名稱管理',
+      '/settings/system': '系統設定',
+      '/settings/users': '用戶管理',
+      '/settings/permissions': '權限管理',
+      '/settings/line': 'LINE 整合',
+      '/reports': '統計報表',
+      '/reports/website-performance': '每日網站績效',
+      '/reports/applications': '進件統計',
+      '/reports/disbursement': '撥款統計',
+      '/reports/sales': '銷售分析',
+      '/reports/customers': '客戶分析',
+      '/reports/accounting': '會計報表',
+      '/chat': '聊天室',
+      '/bank-records': '銀行交涉紀錄'
     }
     
     const title = segmentTitles[currentPath] || pathSegments[i]
@@ -365,7 +395,10 @@ const showUserMenu = ref(false)
 const searchQuery = ref('')
 const searchInput = ref(null)
 
-const languages = computed(() => locales.value)
+const languages = computed(() => [
+  { code: 'zh-TW', name: '繁體中文', flag: '🇹🇼' },
+  { code: 'en', name: 'English', flag: '🇺🇸' }
+])
 
 const toggleSearch = () => {
   showSearch.value = !showSearch.value
@@ -388,7 +421,8 @@ const toggleLanguage = () => {
 }
 
 const selectLanguage = (lang) => {
-  locale.value = lang.code
+  // Language switching functionality disabled for now
+  console.log('Language selected:', lang.code)
   showLanguage.value = false
 }
 

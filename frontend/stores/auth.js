@@ -176,22 +176,34 @@ export const useAuthStore = defineStore('auth', () => {
 
   // 初始化用戶狀態
   const initializeAuth = () => {
-    if (process.client) {
-      const savedUser = localStorage.getItem('admin-template-user')
-      if (savedUser) {
-        try {
-          user.value = JSON.parse(savedUser)
-        } catch (error) {
-          console.error('Failed to parse saved user data:', error)
-          localStorage.removeItem('admin-template-user')
+    if (process.client && !user.value) {
+      // 使用 nextTick 確保 DOM 已經準備好，避免 hydration mismatch
+      nextTick(() => {
+        const savedUser = localStorage.getItem('admin-template-user')
+        if (savedUser) {
+          try {
+            const userData = JSON.parse(savedUser)
+            // 驗證用戶數據的有效性
+            if (userData && userData.id && userData.name && userData.role) {
+              user.value = userData
+              console.log('已載入用戶:', userData.name)
+            } else {
+              console.warn('無效的用戶數據，清除 localStorage')
+              localStorage.removeItem('admin-template-user')
+            }
+          } catch (error) {
+            console.error('Failed to parse saved user data:', error)
+            localStorage.removeItem('admin-template-user')
+          }
+        } else {
+          // 開發環境自動登入 - 使用經銷商帳號以便檢視所有功能
+          const devUser = { ...mockUsers.value[0] } // 經銷商王總
+          delete devUser.password // 移除密碼
+          user.value = devUser
+          localStorage.setItem('admin-template-user', JSON.stringify(devUser))
+          console.log('開發環境自動登入:', devUser.name)
         }
-      } else {
-        // 開發環境自動登入 - 使用經銷商帳號以便檢視所有功能
-        const devUser = mockUsers.value[0] // 經銷商王總
-        user.value = { ...devUser }
-        localStorage.setItem('admin-template-user', JSON.stringify(devUser))
-        console.log('開發環境自動登入:', devUser.name)
-      }
+      })
     }
   }
 

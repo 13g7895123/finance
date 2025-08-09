@@ -1,47 +1,50 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 flex items-center justify-center p-6">
-    <div class="text-center">
+  <div class="min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 flex items-center justify-center p-6 error-container">
+    <div class="text-center max-w-2xl mx-auto">
       <!-- Error Code Display -->
-      <div class="relative mb-8">
-        <h1 class="text-9xl font-bold text-gray-300 select-none">
-          {{ error.statusCode }}
-        </h1>
-        <div class="absolute inset-0 flex items-center justify-center">
-          <div class="bg-white rounded-2xl shadow-2xl p-8 border border-gray-200">
-            <ExclamationTriangleIcon class="w-16 h-16 text-red-500 mx-auto mb-4" />
-            <h2 class="text-2xl font-bold text-gray-900 mb-2">
-              {{ getErrorTitle() }}
-            </h2>
-            <p class="text-gray-600 mb-6 max-w-md">
-              {{ getErrorMessage() }}
-            </p>
+      <div class="mb-8">
+        <!-- Large Error Code Background -->
+        <div class="relative mb-6">
+          <h1 class="text-8xl md:text-9xl font-bold text-gray-200 select-none mb-4">
+            {{ error.statusCode }}
+          </h1>
+        </div>
+        
+        <!-- Main Error Card -->
+        <div class="bg-white rounded-2xl shadow-2xl p-8 border border-gray-200 mx-auto error-card">
+          <ExclamationTriangleIcon class="w-16 h-16 text-red-500 mx-auto mb-4" />
+          <h2 class="text-2xl font-bold text-gray-900 mb-4">
+            {{ getErrorTitle() }}
+          </h2>
+          <p class="text-gray-600 mb-8 max-w-md mx-auto leading-relaxed">
+            {{ getErrorMessage() }}
+          </p>
+          
+          <!-- Action Buttons -->
+          <div class="space-y-3 max-w-sm mx-auto">
+            <button
+              @click="handleGoHome"
+              class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl"
+            >
+              <HomeIcon class="w-5 h-5" />
+              <span>返回首頁</span>
+            </button>
             
-            <!-- Action Buttons -->
-            <div class="space-y-3">
-              <button
-                @click="handleGoHome"
-                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2"
-              >
-                <HomeIcon class="w-5 h-5" />
-                <span>返回首頁</span>
-              </button>
-              
-              <button
-                @click="handleGoBack"
-                class="w-full bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2"
-              >
-                <ArrowLeftIcon class="w-5 h-5" />
-                <span>返回上一頁</span>
-              </button>
-              
-              <button
-                @click="handleRefresh"
-                class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2"
-              >
-                <ArrowPathIcon class="w-5 h-5" />
-                <span>重新載入</span>
-              </button>
-            </div>
+            <button
+              @click="handleGoBack"
+              class="w-full bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl"
+            >
+              <ArrowLeftIcon class="w-5 h-5" />
+              <span>返回上一頁</span>
+            </button>
+            
+            <button
+              @click="handleRefresh"
+              class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl"
+            >
+              <ArrowPathIcon class="w-5 h-5" />
+              <span>重新載入</span>
+            </button>
           </div>
         </div>
       </div>
@@ -126,21 +129,43 @@ const getErrorMessage = () => {
 }
 
 // Navigation handlers
-const handleGoHome = () => {
-  navigateTo('/dashboard/analytics')
+const handleGoHome = async () => {
+  try {
+    if (process.client) {
+      // 使用 window.location 代替 navigateTo 避免權限問題
+      window.location.href = '/'
+    }
+  } catch (error) {
+    console.error('Navigation error:', error)
+    // 降級處理：直接使用 window.location
+    if (process.client) {
+      window.location.href = '/'
+    }
+  }
 }
 
 const handleGoBack = () => {
-  if (process.client && window.history.length > 1) {
-    window.history.back()
-  } else {
+  try {
+    if (process.client && window.history.length > 1) {
+      window.history.back()
+    } else {
+      handleGoHome()
+    }
+  } catch (error) {
+    console.error('Go back error:', error)
     handleGoHome()
   }
 }
 
 const handleRefresh = () => {
-  if (process.client) {
-    window.location.reload()
+  try {
+    if (process.client) {
+      window.location.reload()
+    }
+  } catch (error) {
+    console.error('Refresh error:', error)
+    // 降級處理：嘗試重新導向到首頁
+    handleGoHome()
   }
 }
 </script>
@@ -166,10 +191,40 @@ const handleRefresh = () => {
   }
 }
 
-/* Responsive design for very small screens */
+/* Responsive design fixes */
 @media (max-width: 640px) {
   h1 {
-    font-size: 6rem;
+    font-size: 4rem !important;
   }
+  
+  .error-container {
+    padding: 1rem;
+  }
+  
+  .error-card {
+    padding: 1.5rem;
+    margin: 0 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 3rem !important;
+  }
+  
+  .error-card {
+    padding: 1rem;
+  }
+}
+
+/* Fix button focus states */
+button:focus {
+  outline: 2px solid #3B82F6;
+  outline-offset: 2px;
+}
+
+/* Ensure proper spacing */
+.space-y-3 > * + * {
+  margin-top: 0.75rem !important;
 }
 </style>

@@ -214,6 +214,9 @@ import {
   ExclamationTriangleIcon
 } from '@heroicons/vue/24/outline'
 
+// 明確匯入 StatsCard 組件
+import StatsCard from '~/components/StatsCard.vue'
+
 definePageMeta({
   middleware: ['auth', 'role']
 })
