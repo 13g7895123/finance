@@ -60,3 +60,6 @@
     - 執行add commit push，記得不要加上「Generated with Claude Code」的標記
 26. 完成以下功能
     - 404頁面有內容重疊覆蓋的問題
+27. 目前後端我在local用docker啟用也無法使用，幫我修復這個問題，完成後執行add commit push，記得不要加上「Generated with Claude Code」的標記
+28. 目前docker啟用報了這個錯誤，failed to solve: process "/bin/sh -c composer install --no-dev --optimize-autoloader --no-interaction" did not complete successfully: exit code: 1
+29. 一樣有錯誤，target backend: failed to solve: process "/bin/sh -c composer install --no-dev --optimize-autoloader --no-interaction" did not complete successfully: exit code: 1
