@@ -1,12 +1,12 @@
 <template>
-  <div class="flex h-full bg-gray-50 dark:bg-gray-900">
+  <div class="flex h-full bg-gray-50">
     <!-- 左側用戶列表 -->
-    <div class="w-80 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col">
+    <div class="w-80 bg-white border-r border-gray-300 flex flex-col">
       <!-- 標題和篩選 -->
-      <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+      <div class="p-4 border-b border-gray-200">
         <div class="flex items-center justify-between mb-4">
-          <h2 class="text-lg font-semibold text-gray-900 dark:text-white">聊天室</h2>
-          <button class="p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+          <h2 class="text-lg font-semibold text-gray-900 ">聊天室</h2>
+          <button class="p-2 text-gray-500 hover:bg-gray-100  rounded-lg">
             <PlusIcon class="w-5 h-5" />
           </button>
         </div>
@@ -17,7 +17,7 @@
             v-model="searchQuery"
             type="text"
             placeholder="搜尋用戶..."
-            class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            class="w-full pl-10 pr-4 py-2 border border-gray-300  rounded-lg bg-white  text-gray-900  placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <MagnifyingGlassIcon class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
         </div>
@@ -31,7 +31,7 @@
             class="px-3 py-1 text-sm rounded-full transition-colors duration-200"
             :class="activeFilter === filter.key 
               ? 'bg-blue-500 text-white' 
-              : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'"
+              : 'bg-gray-100  text-gray-700  hover:bg-gray-200 '"
           >
             {{ filter.label }}
           </button>
@@ -58,11 +58,11 @@
       />
       
       <!-- 未選擇用戶時的預設畫面 -->
-      <div v-else class="flex-1 flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+      <div v-else class="flex-1 flex items-center justify-center bg-gray-50">
         <div class="text-center">
           <ChatBubbleLeftRightIcon class="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 class="text-xl font-medium text-gray-900 dark:text-white mb-2">選擇聊天對象</h3>
-          <p class="text-gray-500 dark:text-gray-400">從左側列表選擇要聊天的用戶開始對話</p>
+          <h3 class="text-xl font-medium text-gray-900 mb-2">選擇聊天對象</h3>
+          <p class="text-gray-500">從左側列表選擇要聊天的用戶開始對話</p>
         </div>
       </div>
     </div>

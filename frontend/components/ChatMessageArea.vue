@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col h-full">
     <!-- 聊天標題列 -->
-    <div class="p-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+    <div class="p-4 border-b border-gray-200  bg-white ">
       <div class="flex items-center justify-between">
         <div class="flex items-center">
           <div class="relative">
@@ -16,8 +16,8 @@
             ></div>
           </div>
           <div class="ml-3">
-            <h3 class="text-lg font-medium text-gray-900 dark:text-white">{{ user.name }}</h3>
-            <p class="text-sm text-gray-500 dark:text-gray-400">
+            <h3 class="text-lg font-medium text-gray-900 ">{{ user.name }}</h3>
+            <p class="text-sm text-gray-500 ">
               {{ user.online ? '線上' : '離線' }}
               <span v-if="user.isBot" class="ml-2 text-green-600">• LINE BOT</span>
             </p>
@@ -25,13 +25,13 @@
         </div>
         
         <div class="flex items-center space-x-2">
-          <button class="p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+          <button class="p-2 text-gray-500 hover:bg-gray-100  rounded-lg">
             <PhoneIcon class="w-5 h-5" />
           </button>
-          <button class="p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+          <button class="p-2 text-gray-500 hover:bg-gray-100  rounded-lg">
             <VideoCameraIcon class="w-5 h-5" />
           </button>
-          <button class="p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+          <button class="p-2 text-gray-500 hover:bg-gray-100  rounded-lg">
             <InformationCircleIcon class="w-5 h-5" />
           </button>
         </div>
@@ -41,7 +41,7 @@
     <!-- 訊息列表 -->
     <div 
       ref="messagesContainer"
-      class="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50 dark:bg-gray-900"
+      class="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50 "
     >
       <div
         v-for="message in messages"
@@ -63,7 +63,7 @@
           
           <!-- 時間戳記 -->
           <div
-            class="mt-1 text-xs text-gray-500 dark:text-gray-400"
+            class="mt-1 text-xs text-gray-500 "
             :class="{ 'text-right': message.senderId === currentUserId }"
           >
             {{ formatMessageTime(message.timestamp) }}
@@ -84,7 +84,7 @@
       </div>
 
       <!-- LINE BOT 特殊訊息顯示 -->
-      <div v-if="user.isBot && user.role === 'line_customer' && messages.length > 0" class="mt-6 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+      <div v-if="user.isBot && user.role === 'line_customer' && messages.length > 0" class="mt-6 p-4 bg-green-50  rounded-lg border border-green-200 ">
         <div class="flex items-start space-x-3">
           <div class="flex-shrink-0">
             <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
@@ -92,14 +92,14 @@
             </div>
           </div>
           <div class="flex-1">
-            <h4 class="text-sm font-medium text-green-800 dark:text-green-300 mb-1">
+            <h4 class="text-sm font-medium text-green-800  mb-1">
               LINE 官方帳號對話記錄
             </h4>
-            <p class="text-sm text-green-700 dark:text-green-400 mb-2">
+            <p class="text-sm text-green-700  mb-2">
               此對話來自 LINE 官方帳號，系統已自動整合顯示
             </p>
             <!-- 客戶資訊 -->
-            <div v-if="user.customerInfo" class="text-xs text-green-600 dark:text-green-400 space-y-1">
+            <div v-if="user.customerInfo" class="text-xs text-green-600  space-y-1">
               <div><span class="font-medium">LINE ID:</span> {{ user.lineUserId }}</div>
               <div><span class="font-medium">聯絡電話:</span> {{ user.customerInfo.phone }}</div>
               <div><span class="font-medium">地區:</span> {{ user.customerInfo.region }}</div>
@@ -118,7 +118,7 @@
     </div>
 
     <!-- 訊息輸入區域 -->
-    <div class="p-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+    <div class="p-4 bg-white  border-t border-gray-200 ">
       <form @submit.prevent="sendMessage" class="flex items-end space-x-3">
         <div class="flex-1">
           <div class="relative">
@@ -129,7 +129,7 @@
               @keydown.enter.shift.exact="handleShiftEnter"
               placeholder="輸入訊息... (Enter 發送，Shift+Enter 換行)"
               rows="1"
-              class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-2xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none max-h-32"
+              class="w-full px-4 py-3 border border-gray-300  rounded-2xl bg-white  text-gray-900  placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none max-h-32"
               style="min-height: 44px;"
             ></textarea>
           </div>
@@ -138,7 +138,7 @@
         <div class="flex items-center space-x-2">
           <button
             type="button"
-            class="p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
+            class="p-2 text-gray-500 hover:bg-gray-100  rounded-lg"
           >
             <PaperClipIcon class="w-5 h-5" />
           </button>
@@ -236,13 +236,13 @@ const getMessageBubbleClass = (message) => {
     return 'bg-green-500 text-white'
   } else if (isBot && isCustomer) {
     // LINE 客戶訊息
-    return 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600'
+    return 'bg-gray-200  text-gray-900  border border-gray-300 '
   } else if (isCurrentUser) {
     // 當前用戶（後台人員）訊息
     return 'bg-blue-500 text-white'
   } else {
     // 其他內部用戶訊息
-    return 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-600'
+    return 'bg-white  text-gray-900  border border-gray-200 '
   }
 }
 

@@ -4,9 +4,9 @@
       v-for="user in users"
       :key="user.id"
       @click="$emit('userSelect', user)"
-      class="flex items-center p-3 rounded-lg cursor-pointer transition-colors duration-200 hover:bg-gray-50 dark:hover:bg-gray-700"
+      class="flex items-center p-3 rounded-lg cursor-pointer transition-colors duration-200 hover:bg-gray-50 "
       :class="{ 
-        'bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800': activeUserId === user.id 
+        'bg-blue-50  border border-blue-200 ': activeUserId === user.id 
       }"
     >
       <!-- 用戶頭像 -->
@@ -19,12 +19,12 @@
         <!-- 在線狀態指示器 -->
         <div
           v-if="user.online"
-          class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white dark:border-gray-800 rounded-full"
+          class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white  rounded-full"
         ></div>
         <!-- BOT標誌 -->
         <div
           v-if="user.isBot"
-          class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white dark:border-gray-800 rounded-full flex items-center justify-center"
+          class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white  rounded-full flex items-center justify-center"
         >
           <span class="text-white text-xs font-bold">B</span>
         </div>
@@ -33,16 +33,16 @@
       <!-- 用戶資訊 -->
       <div class="ml-3 flex-1 min-w-0">
         <div class="flex items-center justify-between mb-1">
-          <h4 class="text-sm font-medium text-gray-900 dark:text-white truncate">
+          <h4 class="text-sm font-medium text-gray-900  truncate">
             {{ user.name }}
           </h4>
-          <span class="text-xs text-gray-500 dark:text-gray-400 flex-shrink-0 ml-2">
+          <span class="text-xs text-gray-500  flex-shrink-0 ml-2">
             {{ formatTime(user.timestamp) }}
           </span>
         </div>
         
         <div class="flex items-center justify-between">
-          <p class="text-sm text-gray-600 dark:text-gray-300 truncate">
+          <p class="text-sm text-gray-600  truncate">
             {{ user.lastMessage }}
           </p>
           
@@ -74,7 +74,7 @@
             </span>
           </div>
           <!-- LINE 客戶詳細資訊 -->
-          <div v-if="user.role === 'line_customer' && user.customerInfo" class="text-xs text-gray-500 dark:text-gray-400">
+          <div v-if="user.role === 'line_customer' && user.customerInfo" class="text-xs text-gray-500 ">
             <div>{{ user.customerInfo.phone }} · {{ user.customerInfo.region }}</div>
             <div>來源：{{ user.customerInfo.source }}</div>
           </div>
@@ -130,23 +130,23 @@ const getRoleDisplayName = (role) => {
 // 角色樣式類別
 const getRoleClass = (role) => {
   const roleClasses = {
-    'dealer_executive': 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300',
-    'admin_manager': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
-    'sales_staff': 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
-    'line_bot': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300',
-    'line_customer': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
+    'dealer_executive': 'bg-purple-100 text-purple-800 ',
+    'admin_manager': 'bg-green-100 text-green-800 ',
+    'sales_staff': 'bg-blue-100 text-blue-800 ',
+    'line_bot': 'bg-yellow-100 text-yellow-800 ',
+    'line_customer': 'bg-green-100 text-green-800 '
   }
-  return roleClasses[role] || 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
+  return roleClasses[role] || 'bg-gray-100 text-gray-800 '
 }
 
 // 案件狀態樣式類別
 const getStatusClass = (status) => {
   const statusClasses = {
-    '待處理': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300',
-    '進行中': 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
-    '已完成': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
-    '已結案': 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
+    '待處理': 'bg-yellow-100 text-yellow-800 ',
+    '進行中': 'bg-blue-100 text-blue-800 ',
+    '已完成': 'bg-green-100 text-green-800 ',
+    '已結案': 'bg-gray-100 text-gray-800 '
   }
-  return statusClasses[status] || 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
+  return statusClasses[status] || 'bg-gray-100 text-gray-800 '
 }
 </script>
