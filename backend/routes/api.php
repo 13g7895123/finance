@@ -8,6 +8,8 @@ use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\ReportController;
+use App\Http\Controllers\HealthController;
+use App\Http\Controllers\TestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +21,16 @@ use App\Http\Controllers\Api\ReportController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+// Health check routes (public)
+Route::get('/health', [HealthController::class, 'check']);
+Route::get('/health/database', [HealthController::class, 'database']);
+Route::get('/health/info', [HealthController::class, 'info']);
+
+// Test routes (public - for debugging)
+Route::get('/test/system', [TestController::class, 'systemTest']);
+Route::get('/test/auth', [TestController::class, 'authTest']);
+Route::get('/test/setup', [TestController::class, 'setupStatus']);
 
 // Public routes
 Route::post('/auth/login', [AuthController::class, 'login']);
@@ -34,36 +46,44 @@ Route::middleware(['auth:api'])->group(function () {
     Route::post('/auth/logout', [AuthController::class, 'logout']);
     Route::get('/auth/me', [AuthController::class, 'me']);
     
-    // Dashboard
+    // Dashboard - Available to all authenticated users
     Route::get('/dashboard/stats', [DashboardController::class, 'getStats']);
     Route::get('/dashboard/recent-customers', [DashboardController::class, 'getRecentCustomers']);
     Route::get('/dashboard/monthly-summary', [DashboardController::class, 'getMonthlySummary']);
+    Route::get('/dashboard/charts', [DashboardController::class, 'getChartsData']);
     
-    // Customer Management
+    // Customer Management - Uses customer ownership middleware
     Route::apiResource('customers', CustomerController::class);
     Route::post('/customers/{customer}/track', [CustomerController::class, 'setTrackDate']);
     Route::post('/customers/{customer}/status', [CustomerController::class, 'updateStatus']);
     Route::post('/customers/{customer}/assign', [CustomerController::class, 'assignToUser']);
     Route::get('/customers/{customer}/history', [CustomerController::class, 'getHistory']);
     
-    // Chat Management
+    // Chat Management - Uses customer ownership middleware
     Route::get('/chats', [ChatController::class, 'index']);
-    Route::get('/chats/{user}', [ChatController::class, 'getConversation']);
-    Route::post('/chats/{user}/reply', [ChatController::class, 'reply']);
+    Route::get('/chats/{userId}', [ChatController::class, 'getConversation']);
+    Route::post('/chats/{userId}/reply', [ChatController::class, 'reply']);
+    Route::get('/chats/unread/count', [ChatController::class, 'getUnreadCount']);
     
-    // User Management (Admin only)
-    Route::middleware(['role:admin|manager'])->group(function () {
-        Route::apiResource('users', UserController::class);
+    // User Management (Admin and Manager only)
+    Route::middleware(['role:admin|executive|manager'])->group(function () {
+        Route::get('/users', [UserController::class, 'index']);
+        Route::post('/users', [UserController::class, 'store']);
+        Route::get('/users/{user}', [UserController::class, 'show']);
+        Route::put('/users/{user}', [UserController::class, 'update']);
+        Route::delete('/users/{user}', [UserController::class, 'destroy']);
         Route::post('/users/{user}/roles', [UserController::class, 'assignRole']);
         Route::delete('/users/{user}/roles/{role}', [UserController::class, 'removeRole']);
+        Route::get('/roles', [UserController::class, 'getRoles']);
+        Route::get('/users/stats/overview', [UserController::class, 'getStats']);
     });
     
-    // Reports (Manager and Admin only)
-    Route::middleware(['role:admin|manager'])->group(function () {
+    // Reports (Manager, Admin and Executive only)
+    Route::middleware(['role:admin|executive|manager'])->group(function () {
         Route::get('/reports/daily', [ReportController::class, 'dailyReport']);
         Route::get('/reports/monthly', [ReportController::class, 'monthlyReport']);
-        Route::get('/reports/by-website', [ReportController::class, 'websiteReport']);
-        Route::get('/reports/by-region', [ReportController::class, 'regionReport']);
-        Route::get('/reports/approval-rate', [ReportController::class, 'approvalRate']);
+        Route::get('/reports/website-performance', [ReportController::class, 'websiteReport']);
+        Route::get('/reports/region-performance', [ReportController::class, 'regionReport']);
+        Route::get('/reports/approval-rates', [ReportController::class, 'approvalRate']);
     });
 });

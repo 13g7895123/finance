@@ -85,3 +85,13 @@
     - 幫我移除登入頁自動登入，我要看一下每個身分登入後的狀況
 41. 聊天室的部分左側與右側中間給我一個淡灰色區隔
 42. 目前部屬上vps，laravel後端的部分無法使用
+43. 完成以下功能
+    - 調整一下權限，經銷商與公司高層也要用admin的所有功能
+    - 完成權限管理的功能
+    - 後端laravel的部分完全無法使用，連laravel的初始畫面都沒有
+44. 完成以下功能
+    - 幫我把.env、docker-compose.override.yml、docs、CLAUDE.md加入.gitignore，不要上傳到server
+    - 執行point 45
+45. 執行add commit push，記得不要加上「Generated with Claude Code」的標記
+46. 完成以下功能
+    - 後台的用戶管理、權限管理，先幫我整理出對應的call api路徑到conposable，並確認後台是否存在對應的API，有的話確認是否可以用，可以用的話直接串接，無法的話進行API生成
