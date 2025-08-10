@@ -20,10 +20,10 @@
       </div>
 
       <!-- Access Denied for Non-Admin -->
-      <div v-if="!authStore.isAdmin" class="text-center py-12">
+      <div v-if="!authStore.hasPermission('all_access') && !authStore.isAdmin" class="text-center py-12">
         <ShieldExclamationIcon class="w-12 h-12 text-red-500 mx-auto mb-4" />
-        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">{{ t('auth.access_denied') }}</h3>
-        <p class="text-gray-600 dark:text-gray-400">{{ t('auth.admin_only_feature') }}</p>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">存取被拒絕</h3>
+        <p class="text-gray-600">您沒有權限使用此功能</p>
       </div>
 
       <!-- Users Table -->
@@ -66,11 +66,12 @@
                 <span 
                   class="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
                   :class="{
-                    'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400': user.role === 'admin',
-                    'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400': user.role === 'user'
+                    'bg-purple-100 text-purple-800': user.roles?.[0]?.name === 'admin' || user.roles?.[0]?.name === 'executive',
+                    'bg-blue-100 text-blue-800': user.roles?.[0]?.name === 'manager',
+                    'bg-green-100 text-green-800': user.roles?.[0]?.name === 'staff'
                   }"
                 >
-                  {{ t(`auth.role_${user.role}`) }}
+                  {{ user.roles?.[0]?.display_name || user.roles?.[0]?.name || '無角色' }}
                 </span>
               </td>
 
@@ -115,10 +116,10 @@
                   <!-- Delete -->
                   <button
                     v-if="user.id !== authStore.user?.id"
-                    @click="deleteUser(user)"
+                    @click="deleteUserConfirm(user)"
                     class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 transition-colors duration-200"
                   >
-                    {{ t('common.delete') }}
+                    刪除
                   </button>
                 </div>
               </td>
@@ -175,8 +176,9 @@
               v-model="editForm.role"
               class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
             >
-              <option value="user">{{ t('auth.role_user') }}</option>
-              <option value="admin">{{ t('auth.role_admin') }}</option>
+              <option v-for="role in roles" :key="role.id" :value="role.name">
+                {{ role.display_name }}
+              </option>
             </select>
           </div>
         </div>
@@ -214,31 +216,55 @@ definePageMeta({
 
 const { t } = useI18n()
 const authStore = useAuthStore()
+const { getUsers, createUser, updateUser, deleteUser, getRoles, assignRole } = useUserManagement()
 
 const searchQuery = ref('')
 const showEditModal = ref(false)
 const editForm = ref({})
+const loading = ref(false)
+const users = ref([])
+const roles = ref([])
 
-// Get all users (only for admins)
-const users = computed(() => {
+// 載入用戶數據
+const loadUsers = async () => {
   try {
-    return authStore.isAdmin ? authStore.getAllUsers() : []
-  } catch {
-    return []
+    loading.value = true
+    const response = await getUsers({ search: searchQuery.value })
+    users.value = response.data || []
+  } catch (error) {
+    console.error('Failed to load users:', error)
+  } finally {
+    loading.value = false
   }
-})
+}
 
-// Filter users based on search query
-const filteredUsers = computed(() => {
-  if (!searchQuery.value) return users.value
-  
-  const query = searchQuery.value.toLowerCase()
-  return users.value.filter(user => 
-    user.name.toLowerCase().includes(query) ||
-    user.email.toLowerCase().includes(query) ||
-    user.username.toLowerCase().includes(query)
-  )
-})
+// 載入角色數據
+const loadRoles = async () => {
+  try {
+    const response = await getRoles()
+    roles.value = Array.isArray(response) ? response : []
+  } catch (error) {
+    console.error('Failed to load roles:', error)
+  }
+}
+
+// Filter users based on search query - 搜索功能由API處理
+const filteredUsers = computed(() => users.value)
+
+// 監聽搜索查詢變化
+const debounce = (func, delay) => {
+  let timeoutId
+  return (...args) => {
+    clearTimeout(timeoutId)
+    timeoutId = setTimeout(() => func(...args), delay)
+  }
+}
+
+watch(searchQuery, debounce(() => {
+  if (authStore.hasPermission('all_access') || authStore.isAdmin) {
+    loadUsers()
+  }
+}, 300))
 
 // Format date for display
 const formatDate = (date) => {
@@ -252,9 +278,12 @@ const formatDate = (date) => {
 }
 
 // Toggle user status
-const toggleStatus = (user) => {
+const toggleStatus = async (user) => {
   try {
-    authStore.toggleUserStatus(user.id)
+    const newStatus = user.status === 'active' ? 'inactive' : 'active'
+    await updateUser(user.id, { status: newStatus })
+    // 重新載入用戶列表
+    await loadUsers()
   } catch (error) {
     console.error('Failed to toggle user status:', error)
   }
@@ -267,27 +296,46 @@ const editUser = (user) => {
 }
 
 // Save user changes
-const saveUser = () => {
+const saveUser = async () => {
   try {
-    authStore.updateUser(editForm.value.id, {
+    await updateUser(editForm.value.id, {
       name: editForm.value.name,
-      email: editForm.value.email,
-      role: editForm.value.role
+      email: editForm.value.email
     })
+    
+    // 如果角色有變更，另外處理角色指派
+    if (editForm.value.role) {
+      await assignRole(editForm.value.id, editForm.value.role)
+    }
+    
     showEditModal.value = false
+    // 重新載入用戶列表
+    await loadUsers()
   } catch (error) {
     console.error('Failed to update user:', error)
+    alert('更新用戶失敗，請重試')
   }
 }
 
 // Delete user
-const deleteUser = (user) => {
-  if (confirm(t('auth.confirm_delete_user'))) {
+const deleteUserConfirm = async (user) => {
+  if (confirm('確定要刪除此用戶嗎？此操作無法復原。')) {
     try {
-      authStore.deleteUser(user.id)
+      await deleteUser(user.id)
+      // 重新載入用戶列表
+      await loadUsers()
     } catch (error) {
       console.error('Failed to delete user:', error)
+      alert('刪除用戶失敗，請重試')
     }
   }
 }
+
+// 頁面初始化
+onMounted(() => {
+  if (authStore.hasPermission('all_access') || authStore.isAdmin) {
+    loadUsers()
+    loadRoles()
+  }
+})
 </script>

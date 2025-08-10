@@ -98,3 +98,18 @@
     - 執行point 45
 47. 目前local端已透過docker啟用了該專案，但是後端PORT 9219進去還是網頁無法正常運作，可以幫我確認一下問題在哪嗎
 48. laravel出現這個錯誤，"Undefined array key "lottery"，修復完成執行point 45
+49. 檢測當前專案環境，找出為什麼我用NPM的local domain無法使用的原因，並告訴我NPM應該怎麼設定他才會正確，目前的docker是用c開頭的工具啟用的，os是macs，如果需要其他相關資訊加以判斷，請告訴我
+50. 幫我確認為什麼/api無法使用，backend的配置我用advance去處理的
+51. 我想把後端服務掛到finance.local/api在mac環境底下，幫我除錯，同步幫我確認phpmyadmin是否可以掛上去
+52. 可以直接幫我改嗎，我改了以後他還是一樣無法使用，另外phpmyadmin幫我掛到/pma
+53. 聊天室幫我做一個scroll bar，大小為該視窗的右下角，即顯示內容的地方，超過那個高度就顯示
+54. 我希望scroll bar是出現在聊天室這個功能視窗的最右邊，不是瀏覽器的最右邊
+55. 完成以下功能
+    - 更新後台右上角與README.md一樣
+    - 更新網頁TITLE與README.md一樣
+    - navbar的個人資料補上頁面
+    - 更新一下權限的部分，dealer要有所有功能權限
+    - navbar的item，hover後字體要為白色，有可能在main.css沒有被改到
+    - 針對聊天室的功能檢查是否存在API，如果有的話幫我接上API資料
+    - 針對權限與使用者的部分，幫我接上API，如果資料庫沒有資料，幫我用seed創建，並告訴我應該如何執行指令讓vps上面也可以有資料
+    - 執行point 45

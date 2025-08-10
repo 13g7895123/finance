@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-full bg-gray-50">
+  <div class="flex h-screen bg-gray-50">
     <!-- 左側用戶列表 -->
     <div class="w-80 bg-white border-r border-gray-300 flex flex-col">
       <!-- 標題和篩選 -->
@@ -39,7 +39,7 @@
       </div>
 
       <!-- 用戶列表 -->
-      <div class="flex-1 overflow-y-auto">
+      <div class="flex-1 overflow-y-auto custom-scrollbar-left">
         <ChatUserList
           :users="filteredUsers"
           :activeUserId="activeUserId"
@@ -81,6 +81,7 @@ definePageMeta({
 })
 
 const authStore = useAuthStore()
+const { getConversations, getConversation, replyMessage } = useChat()
 
 // 搜尋查詢
 const searchQuery = ref('')
@@ -98,6 +99,14 @@ const activeFilter = ref('all')
 // 選中的用戶
 const activeUserId = ref(null)
 const selectedUser = ref(null)
+
+// 載入狀態
+const loading = ref(false)
+const conversationsLoading = ref(false)
+
+// API 數據狀態
+const apiConversations = ref([])
+const apiMessages = ref({})
 
 // 模擬用戶數據 - 根據權限過濾，包含更多 LINE BOT 對話記錄
 const allUsers = ref([
@@ -256,9 +265,85 @@ const allUsers = ref([
   }
 ])
 
+// 載入對話列表
+const loadConversations = async () => {
+  try {
+    conversationsLoading.value = true
+    const response = await getConversations()
+    
+    if (response?.data) {
+      // 轉換 API 數據格式到前端格式
+      const apiUsers = response.data.map(conv => ({
+        id: parseInt(conv.line_user_id),
+        name: conv.customer?.name || '客戶',
+        role: 'line_customer',
+        avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(conv.customer?.name || '客戶')}&background=00C300&color=fff`,
+        lastMessage: conv.last_message || '',
+        timestamp: new Date(conv.last_message_time),
+        unreadCount: conv.unread_count || 0,
+        online: false,
+        isBot: true,
+        lineUserId: conv.line_user_id,
+        customerInfo: {
+          phone: conv.customer?.phone || '',
+          region: conv.customer?.region || '',
+          source: conv.customer?.source || '',
+          status: conv.customer?.status || ''
+        }
+      }))
+      
+      apiConversations.value = apiUsers
+    }
+  } catch (error) {
+    console.error('Failed to load conversations:', error)
+  } finally {
+    conversationsLoading.value = false
+  }
+}
+
+// 載入特定對話的訊息
+const loadConversationMessages = async (userId) => {
+  try {
+    loading.value = true
+    const response = await getConversation(userId)
+    
+    if (response?.data) {
+      // 轉換 API 數據格式到前端格式
+      const apiMessages = response.data.map(msg => ({
+        id: msg.id,
+        senderId: msg.is_from_customer ? parseInt(msg.line_user_id) : 'bot',
+        content: msg.message_content,
+        timestamp: new Date(msg.message_timestamp),
+        type: 'text',
+        isBot: true,
+        isCustomer: msg.is_from_customer,
+        isAutoReply: !msg.is_from_customer
+      }))
+      
+      apiMessages.value[userId] = apiMessages
+      return apiMessages
+    }
+  } catch (error) {
+    console.error('Failed to load conversation messages:', error)
+    return messages.value[userId] || []
+  } finally {
+    loading.value = false
+  }
+}
+
+// 合併 API 數據和模擬數據
+const combinedUsers = computed(() => {
+  // 如果有 API 數據，優先使用 API 數據
+  if (apiConversations.value.length > 0) {
+    return [...allUsers.value, ...apiConversations.value]
+  }
+  
+  return allUsers.value
+})
+
 // 根據權限過濾用戶列表
 const filteredUsers = computed(() => {
-  let users = allUsers.value
+  let users = combinedUsers.value
 
   // 權限過濾 - 業務人員只能看到自己相關的對話和BOT
   if (authStore.isSales && !authStore.hasPermission('all_access')) {
@@ -435,6 +520,79 @@ const messages = ref({
       type: 'text',
       isBot: true,
       isCustomer: true
+    },
+    // 添加更多測試訊息以觸發滾動條
+    {
+      id: 307,
+      senderId: 102,
+      content: '我想了解更多關於汽車貸款的詳細信息',
+      timestamp: new Date('2024-08-08T14:30:00'),
+      type: 'text',
+      isBot: true,
+      isCustomer: true
+    },
+    {
+      id: 308,
+      senderId: 'bot',
+      content: '很高興為您介紹我們的汽車貸款產品！我們提供多種方案：\n\n1. 一般汽車貸款：利率2.88%起\n2. 中古車貸款：利率3.5%起\n3. 原車融資：最高可貸車價150%\n\n請問您想了解哪一種產品呢？',
+      timestamp: new Date('2024-08-08T14:30:30'),
+      type: 'text',
+      isBot: true,
+      isAutoReply: true
+    },
+    {
+      id: 309,
+      senderId: 102,
+      content: '原車融資聽起來很不錯，可以告訴我更詳細的條件嗎？',
+      timestamp: new Date('2024-08-08T14:32:00'),
+      type: 'text',
+      isBot: true,
+      isCustomer: true
+    },
+    {
+      id: 310,
+      senderId: 'bot',
+      content: '原車融資的詳細條件如下：\n\n✅ 貸款金額：最高車價150%\n✅ 利率：依信用狀況3.88%-12.88%\n✅ 期數：12-84期彈性選擇\n✅ 免保人：信用良好可免保人\n✅ 快速審核：24小時內回覆\n\n需要準備的文件：\n📋 身分證正反面\n📋 駕駛執照\n📋 行車執照\n📋 近3個月銀行存摺\n\n您的車輛年份和廠牌是？',
+      timestamp: new Date('2024-08-08T14:33:00'),
+      type: 'text',
+      isBot: true,
+      isAutoReply: true
+    },
+    {
+      id: 311,
+      senderId: 102,
+      content: '我的車是2020年的Toyota Camry，這樣可以貸多少呢？',
+      timestamp: new Date('2024-08-08T14:35:00'),
+      type: 'text',
+      isBot: true,
+      isCustomer: true
+    },
+    {
+      id: 312,
+      senderId: 'bot',
+      content: '2020年Toyota Camry是很好的車款！根據市場行情評估：\n\n🚗 預估車價：約65-75萬\n💰 最高可貸：約97-112萬\n📊 建議貸款：80-90萬較為安全\n⏰ 還款期數：建議60-72期\n\n實際金額需要進行車輛鑑價，我們的專員可以免費到府評估。\n\n您希望我們安排專員聯繫您嗎？',
+      timestamp: new Date('2024-08-08T14:36:00'),
+      type: 'text',
+      isBot: true,
+      isAutoReply: true
+    },
+    {
+      id: 313,
+      senderId: 102,
+      content: '好的，請安排專員聯繫我，我的電話是0912345678',
+      timestamp: new Date('2024-08-08T14:38:00'),
+      type: 'text',
+      isBot: true,
+      isCustomer: true
+    },
+    {
+      id: 314,
+      senderId: 'bot',
+      content: '感謝您的信任！已經記錄您的聯絡方式：0912345678\n\n我們的專員將在1個工作小時內與您聯繫，為您提供：\n✓ 免費車輛鑑價服務\n✓ 詳細貸款方案說明\n✓ 客製化還款計劃\n✓ 快速審核流程說明\n\n如果您有任何緊急問題，也歡迎隨時透過LINE與我們聯繫。謝謝！',
+      timestamp: new Date('2024-08-08T14:39:00'),
+      type: 'text',
+      isBot: true,
+      isAutoReply: true
     }
   ],
   // 暴色水母的 LINE BOT 對話
@@ -484,13 +642,25 @@ const messages = ref({
 // 當前聊天訊息
 const currentMessages = computed(() => {
   if (!selectedUser.value) return []
+  
+  // 優先使用 API 數據
+  const apiMsgs = apiMessages.value[selectedUser.value.id]
+  if (apiMsgs && apiMsgs.length > 0) {
+    return apiMsgs
+  }
+  
   return messages.value[selectedUser.value.id] || []
 })
 
 // 選擇用戶
-const selectUser = (user) => {
+const selectUser = async (user) => {
   selectedUser.value = user
   activeUserId.value = user.id
+  
+  // 載入對話訊息 (如果是 LINE BOT 用戶)
+  if (user.isBot && user.lineUserId) {
+    await loadConversationMessages(user.lineUserId)
+  }
   
   // 標記為已讀
   if (user.unreadCount > 0) {
@@ -499,58 +669,121 @@ const selectUser = (user) => {
 }
 
 // 發送訊息
-const sendMessage = (content) => {
+const sendMessage = async (content) => {
   if (!selectedUser.value || !content.trim()) return
   
-  const newMessage = {
-    id: Date.now(),
-    senderId: authStore.user?.id,
-    content: content.trim(),
-    timestamp: new Date(),
-    type: 'text'
-  }
-  
-  if (!messages.value[selectedUser.value.id]) {
-    messages.value[selectedUser.value.id] = []
-  }
-  
-  messages.value[selectedUser.value.id].push(newMessage)
-  
-  // 更新最後訊息
-  const userIndex = allUsers.value.findIndex(u => u.id === selectedUser.value.id)
-  if (userIndex !== -1) {
-    allUsers.value[userIndex].lastMessage = content.trim()
-    allUsers.value[userIndex].timestamp = new Date()
+  try {
+    // 如果是 LINE BOT 用戶，使用 API 發送
+    if (selectedUser.value.isBot && selectedUser.value.lineUserId) {
+      const response = await replyMessage(selectedUser.value.lineUserId, content.trim())
+      
+      if (response?.conversation) {
+        // 添加發送的訊息到對話中
+        const newMessage = {
+          id: response.conversation.id,
+          senderId: authStore.user?.id,
+          content: content.trim(),
+          timestamp: new Date(response.conversation.message_timestamp),
+          type: 'text',
+          isBot: false,
+          isCustomer: false
+        }
+        
+        // 更新 API 訊息數據
+        if (!apiMessages.value[selectedUser.value.lineUserId]) {
+          apiMessages.value[selectedUser.value.lineUserId] = []
+        }
+        apiMessages.value[selectedUser.value.lineUserId].push(newMessage)
+      }
+    } else {
+      // 對於內部用戶，使用原有的模擬邏輯
+      const newMessage = {
+        id: Date.now(),
+        senderId: authStore.user?.id,
+        content: content.trim(),
+        timestamp: new Date(),
+        type: 'text'
+      }
+      
+      if (!messages.value[selectedUser.value.id]) {
+        messages.value[selectedUser.value.id] = []
+      }
+      
+      messages.value[selectedUser.value.id].push(newMessage)
+    }
+    
+    // 更新最後訊息
+    const userIndex = allUsers.value.findIndex(u => u.id === selectedUser.value.id)
+    if (userIndex !== -1) {
+      allUsers.value[userIndex].lastMessage = content.trim()
+      allUsers.value[userIndex].timestamp = new Date()
+    }
+    
+    // 更新 API 對話列表中的對應項目
+    const apiUserIndex = apiConversations.value.findIndex(u => u.id === selectedUser.value.id)
+    if (apiUserIndex !== -1) {
+      apiConversations.value[apiUserIndex].lastMessage = content.trim()
+      apiConversations.value[apiUserIndex].timestamp = new Date()
+    }
+    
+  } catch (error) {
+    console.error('Failed to send message:', error)
+    alert('發送訊息失敗，請重試')
   }
 }
 
+// 初始化數據載入
+onMounted(() => {
+  loadConversations()
+})
+
 // 頁面標題
 useHead({
-  title: '聊天室 - 金融管理系統'
+  title: '聊天室 - 融資貸款公司 CRM 系統'
 })
 </script>
 
 <style scoped>
-/* 自定義滾動條 */
-.overflow-y-auto {
+/* 左側用戶列表滾動條樣式 */
+.custom-scrollbar-left {
   scrollbar-width: thin;
-  scrollbar-color: #cbd5e1 #f1f5f9;
+  scrollbar-color: #cbd5e1 #f8fafc;
 }
 
-.overflow-y-auto::-webkit-scrollbar {
-  width: 6px;
+.custom-scrollbar-left::-webkit-scrollbar {
+  width: 8px;
 }
 
-.overflow-y-auto::-webkit-scrollbar-track {
-  background: #f1f5f9;
+.custom-scrollbar-left::-webkit-scrollbar-track {
+  background: #f8fafc;
+  border-radius: 4px;
+  margin: 4px 0;
 }
 
-.overflow-y-auto::-webkit-scrollbar-thumb {
+.custom-scrollbar-left::-webkit-scrollbar-thumb {
   background: #cbd5e1;
-  border-radius: 3px;
+  border-radius: 4px;
+  border: 1px solid #f8fafc;
+  min-height: 20px;
 }
 
-.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+.custom-scrollbar-left::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
+}
+
+.custom-scrollbar-left::-webkit-scrollbar-thumb:active {
+  background: #64748b;
+}
+
+.custom-scrollbar-left::-webkit-scrollbar-corner {
+  background: #f8fafc;
+}
+
+/* 為 Firefox 提供更好的滾動條樣式 */
+@supports (scrollbar-width: thin) {
+  .custom-scrollbar-left {
+    scrollbar-width: auto;
+    scrollbar-color: #cbd5e1 #f8fafc;
+  }
 }
 </style>

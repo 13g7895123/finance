@@ -66,9 +66,9 @@
       <div class="relative">
         <button
           @click="toggleLanguage"
-          class="p-2 hover:bg-gray-700 rounded-lg transition-colors duration-200"
+          class="p-2 hover:bg-gray-700 rounded-lg transition-colors duration-200 group"
         >
-          <GlobeAltIcon class="w-5 h-5 text-gray-700" />
+          <GlobeAltIcon class="w-5 h-5 text-gray-700 group-hover:text-white" />
         </button>
         
         <!-- Language Dropdown -->
@@ -102,9 +102,9 @@
       <div class="relative">
         <button
           @click="toggleNotifications"
-          class="p-2 hover:bg-gray-700 rounded-lg transition-colors duration-200 relative"
+          class="p-2 hover:bg-gray-700 rounded-lg transition-colors duration-200 relative group"
         >
-          <BellIcon class="w-5 h-5 text-gray-700" />
+          <BellIcon class="w-5 h-5 text-gray-700 group-hover:text-white" />
           <span 
             v-if="unreadCount > 0"
             class="absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-red-500 rounded-full flex items-center justify-center text-xs text-white font-bold"

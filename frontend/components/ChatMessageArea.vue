@@ -41,8 +41,9 @@
     <!-- 訊息列表 -->
     <div 
       ref="messagesContainer"
-      class="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50 "
+      class="flex-1 overflow-y-auto bg-gray-50 custom-scrollbar-right relative"
     >
+      <div class="p-4 space-y-4">
       <div
         v-for="message in messages"
         :key="message.id"
@@ -114,6 +115,7 @@
             </button>
           </div>
         </div>
+      </div>
       </div>
     </div>
 
@@ -201,7 +203,7 @@ const sendMessage = () => {
 }
 
 // 處理 Shift+Enter
-const handleShiftEnter = (event) => {
+const handleShiftEnter = () => {
   // 允許 Shift+Enter 換行，不做任何操作
 }
 
@@ -310,26 +312,56 @@ watch(() => newMessage.value, adjustTextareaHeight)
 </script>
 
 <style scoped>
-/* 自定義滾動條樣式 */
-.overflow-y-auto {
+/* 自定義滾動條樣式 - 位於聊天室視窗右側 */
+.custom-scrollbar-right {
   scrollbar-width: thin;
-  scrollbar-color: #cbd5e1 #f1f5f9;
+  scrollbar-color: #9ca3af #f3f4f6;
 }
 
-.overflow-y-auto::-webkit-scrollbar {
-  width: 6px;
+.custom-scrollbar-right::-webkit-scrollbar {
+  width: 14px;
+  position: absolute;
+  right: 0;
 }
 
-.overflow-y-auto::-webkit-scrollbar-track {
-  background: #f1f5f9;
+.custom-scrollbar-right::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 0;
+  margin: 0;
+  border-left: 1px solid #e5e7eb;
 }
 
-.overflow-y-auto::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 3px;
+.custom-scrollbar-right::-webkit-scrollbar-thumb {
+  background: #9ca3af;
+  border-radius: 0;
+  border: none;
+  min-height: 30px;
+  background-clip: padding-box;
 }
 
-.overflow-y-auto::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+.custom-scrollbar-right::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+.custom-scrollbar-right::-webkit-scrollbar-thumb:active {
+  background: #4b5563;
+}
+
+.custom-scrollbar-right::-webkit-scrollbar-corner {
+  background: #f3f4f6;
+}
+
+/* 確保滾動條始終可見並位於最右側 */
+.custom-scrollbar-right::-webkit-scrollbar {
+  background: #f3f4f6;
+  border-left: 1px solid #e5e7eb;
+}
+
+/* 為 Firefox 提供滾動條樣式 */
+@supports (scrollbar-width: thin) {
+  .custom-scrollbar-right {
+    scrollbar-width: auto;
+    scrollbar-color: #9ca3af #f3f4f6;
+  }
 }
 </style>

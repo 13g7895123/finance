@@ -47,7 +47,7 @@ export const useAuthStore = defineStore('auth', () => {
       createdAt: new Date('2024-01-15'),
       lastLogin: new Date(Date.now() - 86400000), // 1 day ago
       status: 'active',
-      permissions: ['dashboard', 'customer_management', 'reports', 'chat', 'settings', 'user_management']
+      permissions: ['all_access']
     },
     {
       id: 3,
