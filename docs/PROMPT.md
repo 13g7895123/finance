@@ -123,3 +123,9 @@
 58. 幫我檢查一下目前local的NPM環境，我想要把網址改成npm.local，host那邊我已經調整完了，其餘麻煩幫我調整一下，並寫下調整了什麼地方，寫進doc/NPM.md裡面，用繁體中文，感謝
 59. 請幫我把剛剛58做的調整改回來，這是NPM不是後端，不要把對的改成錯的
 60. 幫我調整deply.yml，每次部署只有frontend要重新build，後端是不用重啟的，另外需要確保.env不會被更動到
+61. 目前seed有問題，幫我重新確認所有seed與當前資料庫是否無衝突
+ SQLSTATE[42S22]: Column not found: 1054 Unknown column 'guard_name' in 'fie  
+  ld list' (Connection: mysql, SQL: insert into `permissions` (`guard_name`,   
+  `name`, `display_name`, `category`, `description`, `updated_at`, `created_a  
+  t`) values (api, customer.view, 查看客戶資料, customer, 查看客戶資料, 2025-  
+  08-10 13:14:49, 2025-08-10 13:14:49))   
