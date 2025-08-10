@@ -56,7 +56,6 @@ docker-compose.override.yml
 .docker/
 
 # Documentation and project files
-docs/
 CLAUDE.md
 
 # Database

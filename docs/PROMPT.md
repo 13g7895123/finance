@@ -121,3 +121,5 @@
     docker compose exec backend php artisan migrate --force
     幫我依據目前的容器調整成正確可以執行的，完成後執行point 45
 58. 幫我檢查一下目前local的NPM環境，我想要把網址改成npm.local，host那邊我已經調整完了，其餘麻煩幫我調整一下，並寫下調整了什麼地方，寫進doc/NPM.md裡面，用繁體中文，感謝
+59. 請幫我把剛剛58做的調整改回來，這是NPM不是後端，不要把對的改成錯的
+60. 幫我調整deply.yml，每次部署只有frontend要重新build，後端是不用重啟的，另外需要確保.env不會被更動到
