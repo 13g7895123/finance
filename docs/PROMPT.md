@@ -120,3 +120,4 @@
 57. 檢查我的deply.yml檔案，目前這一行有問題
     docker compose exec backend php artisan migrate --force
     幫我依據目前的容器調整成正確可以執行的，完成後執行point 45
+58. 幫我檢查一下目前local的NPM環境，我想要把網址改成npm.local，host那邊我已經調整完了，其餘麻煩幫我調整一下，並寫下調整了什麼地方，寫進doc/NPM.md裡面，用繁體中文，感謝
