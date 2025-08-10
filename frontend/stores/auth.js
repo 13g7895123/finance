@@ -146,16 +146,8 @@ export const useAuthStore = defineStore('auth', () => {
       
       mockUsers.value.push(newUser)
       
-      // 自動登入
-      const { password, ...userWithoutPassword } = newUser
-      user.value = userWithoutPassword
-      
-      // 儲存到 localStorage
-      if (process.client) {
-        localStorage.setItem('admin-template-user', JSON.stringify(userWithoutPassword))
-      }
-      
-      return { success: true, user: userWithoutPassword }
+      // 註冊成功，但不自動登入
+      return { success: true, message: '註冊成功，請使用您的帳號密碼登入' }
     } catch (error) {
       throw error
     }
@@ -179,29 +171,12 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = userData
   }
 
-  // 初始化用戶狀態
+  // 初始化用戶狀態 - 移除自動登入功能
   const initializeAuth = () => {
-    if (process.client && !user.value) {
-      // 使用 nextTick 確保 DOM 已經準備好，避免 hydration mismatch
-      nextTick(() => {
-        const savedUser = localStorage.getItem('admin-template-user')
-        if (savedUser) {
-          try {
-            const userData = JSON.parse(savedUser)
-            // 驗證用戶數據的有效性
-            if (userData && userData.id && userData.name) {
-              user.value = userData
-              console.log('已載入用戶:', userData.name)
-            } else {
-              console.warn('無效的用戶數據，清除 localStorage')
-              localStorage.removeItem('admin-template-user')
-            }
-          } catch (error) {
-            console.error('Failed to parse saved user data:', error)
-            localStorage.removeItem('admin-template-user')
-          }
-        }
-      })
+    if (process.client) {
+      // 清除任何舊的自動登入數據
+      localStorage.removeItem('admin-template-user')
+      console.log('已清除自動登入數據，請手動登入')
     }
   }
 

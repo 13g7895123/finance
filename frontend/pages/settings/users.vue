@@ -26,30 +26,37 @@
         <p class="text-gray-600">您沒有權限使用此功能</p>
       </div>
 
+      <!-- Loading State -->
+      <div v-else-if="loading" class="text-center py-12">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto mb-4"></div>
+        <p class="text-gray-600">載入用戶資料中...</p>
+      </div>
+
       <!-- Users Table -->
       <div v-else class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-          <thead class="bg-gray-50 dark:bg-gray-700">
-            <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                {{ t('auth.user') }}
-              </th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                {{ t('auth.role') }}
-              </th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                {{ t('auth.status') }}
-              </th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                {{ t('auth.last_login') }}
-              </th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                {{ t('auth.actions') }}
-              </th>
-            </tr>
-          </thead>
-          <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-            <tr v-for="user in filteredUsers" :key="user.id" class="hover:bg-gray-50 dark:hover:bg-gray-700">
+        <ClientOnly>
+          <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead class="bg-gray-50 dark:bg-gray-700">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  {{ t('auth.user') }}
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  {{ t('auth.role') }}
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  {{ t('auth.status') }}
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  {{ t('auth.last_login') }}
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  {{ t('auth.actions') }}
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+              <tr v-for="user in filteredUsers" :key="user.id" class="hover:bg-gray-50 dark:hover:bg-gray-700">
               <!-- User Info -->
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="flex items-center">
@@ -90,7 +97,7 @@
 
               <!-- Last Login -->
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                {{ user.last_login_at ? formatDate(user.last_login_at) : '從未登入' }}
+                {{ formatDate(user.last_login_at) }}
               </td>
 
               <!-- Actions -->
@@ -125,13 +132,14 @@
               </td>
             </tr>
           </tbody>
-        </table>
+          </table>
 
-        <!-- No Users Found -->
-        <div v-if="filteredUsers.length === 0" class="text-center py-12">
-          <UsersIcon class="w-12 h-12 text-gray-400 mx-auto mb-4" />
-          <p class="text-gray-500 dark:text-gray-400">{{ t('auth.no_users_found') }}</p>
-        </div>
+          <!-- No Users Found -->
+          <div v-if="filteredUsers.length === 0" class="text-center py-12">
+            <UsersIcon class="w-12 h-12 text-gray-400 mx-auto mb-4" />
+            <p class="text-gray-500 dark:text-gray-400">{{ t('auth.no_users_found') }}</p>
+          </div>
+        </ClientOnly>
       </div>
     </div>
 
@@ -266,15 +274,27 @@ watch(searchQuery, debounce(() => {
   }
 }, 300))
 
-// Format date for display
+// Format date for display - consistent between server and client
 const formatDate = (date) => {
-  return new Date(date).toLocaleDateString('zh-TW', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  })
+  if (!date) return '從未登入'
+  
+  try {
+    const dateObj = new Date(date)
+    if (isNaN(dateObj.getTime())) return '無效日期'
+    
+    // Use ISO string format to ensure consistency
+    return dateObj.toLocaleDateString('zh-TW', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      timeZone: 'Asia/Taipei'
+    })
+  } catch (error) {
+    console.error('Date formatting error:', error)
+    return '日期錯誤'
+  }
 }
 
 // Toggle user status

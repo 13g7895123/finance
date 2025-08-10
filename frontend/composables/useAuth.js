@@ -144,19 +144,13 @@ export const useAuth = () => {
   })
 
   /**
-   * 初始化認證狀態
+   * 初始化認證狀態 - 移除自動登入功能
    */
   const initAuth = () => {
-    if (process.client && !user.value) {
-      const savedUser = localStorage.getItem('finance_user')
-      if (savedUser && token.value) {
-        try {
-          user.value = JSON.parse(savedUser)
-        } catch (error) {
-          console.error('Failed to parse saved user:', error)
-          localStorage.removeItem('finance_user')
-        }
-      }
+    if (process.client) {
+      // 清除任何舊的認證數據，用戶必須手動登入
+      localStorage.removeItem('finance_user')
+      console.log('已清除自動登入功能，請手動登入')
     }
   }
 
