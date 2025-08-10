@@ -2,12 +2,12 @@ export const useChat = () => {
   const config = useRuntimeConfig()
   const authStore = useAuthStore()
   
-  // API 基礎設定
+  // API 基礎設定 - 優先使用真實API
   const apiCall = async (endpoint, options = {}) => {
     try {
-      const token = authStore.user?.token || 'mock-token'
+      const token = authStore.user?.token || 'mock-jwt-token'
       
-      const { data } = await $fetch(endpoint, {
+      const response = await $fetch(endpoint, {
         baseURL: config.public.apiBase || 'http://localhost:8000/api',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -18,16 +18,17 @@ export const useChat = () => {
         ...options
       })
       
-      return data
+      return response
     } catch (error) {
-      console.error('API Error:', error)
+      console.error('Chat API Error:', error.message || error)
       
-      // 如果 API 不可用，回退到模擬數據
-      if (error.status === undefined || error.status >= 500) {
-        console.warn('API unavailable, using mock data')
+      // 只在網络完全不可達或真正的服務器錯誤時才回退到模擬數據
+      if (error.status === undefined || error.name === 'FetchError' || error.status >= 500) {
+        console.warn('API completely unavailable, falling back to mock data for:', endpoint)
         return getMockData(endpoint, options)
       }
       
+      // 其他錯誤（如認證問題等）應該拋出
       throw error
     }
   }

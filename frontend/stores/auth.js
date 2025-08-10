@@ -174,6 +174,11 @@ export const useAuthStore = defineStore('auth', () => {
     navigateTo('/auth/login')
   }
 
+  // 設定用戶資料
+  const setUser = (userData) => {
+    user.value = userData
+  }
+
   // 初始化用戶狀態
   const initializeAuth = () => {
     if (process.client && !user.value) {
@@ -184,7 +189,7 @@ export const useAuthStore = defineStore('auth', () => {
           try {
             const userData = JSON.parse(savedUser)
             // 驗證用戶數據的有效性
-            if (userData && userData.id && userData.name && userData.role) {
+            if (userData && userData.id && userData.name) {
               user.value = userData
               console.log('已載入用戶:', userData.name)
             } else {
@@ -280,6 +285,7 @@ export const useAuthStore = defineStore('auth', () => {
     login,
     register,
     logout,
+    setUser,
     initializeAuth,
     hasPermission,
     

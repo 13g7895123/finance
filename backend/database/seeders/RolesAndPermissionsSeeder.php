@@ -24,11 +24,12 @@ class RolesAndPermissionsSeeder extends Seeder
         foreach ($permissions as $category => $categoryPermissions) {
             foreach ($categoryPermissions as $permissionName => $displayName) {
                 Permission::firstOrCreate(
-                    ['name' => $permissionName],
+                    ['name' => $permissionName, 'guard_name' => 'web'],
                     [
                         'display_name' => $displayName,
                         'category' => $category,
                         'description' => $displayName,
+                        'guard_name' => 'web',
                     ]
                 );
             }
@@ -36,38 +37,42 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // Create roles
         $adminRole = Role::firstOrCreate(
-            ['name' => 'admin'],
+            ['name' => 'admin', 'guard_name' => 'web'],
             [
                 'display_name' => '經銷商/公司高層',
                 'description' => '系統管理員，擁有所有權限',
                 'is_system_role' => true,
+                'guard_name' => 'web',
             ]
         );
 
         $executiveRole = Role::firstOrCreate(
-            ['name' => 'executive'],
+            ['name' => 'executive', 'guard_name' => 'web'],
             [
                 'display_name' => '經銷商/公司高層',
                 'description' => '公司高層，擁有管理員等級權限',
                 'is_system_role' => true,
+                'guard_name' => 'web',
             ]
         );
 
         $managerRole = Role::firstOrCreate(
-            ['name' => 'manager'],
+            ['name' => 'manager', 'guard_name' => 'web'],
             [
                 'display_name' => '行政人員/主管',
                 'description' => '可編輯大部分資料，無法修改銀行交涉紀錄',
                 'is_system_role' => true,
+                'guard_name' => 'web',
             ]
         );
 
         $staffRole = Role::firstOrCreate(
-            ['name' => 'staff'],
+            ['name' => 'staff', 'guard_name' => 'web'],
             [
                 'display_name' => '業務人員',
                 'description' => '僅能編輯查詢自己負責的客戶資料',
                 'is_system_role' => true,
+                'guard_name' => 'web',
             ]
         );
 
