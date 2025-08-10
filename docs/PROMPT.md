@@ -131,3 +131,7 @@
   08-10 13:14:49, 2025-08-10 13:14:49))   
 62. 用戶管理裡面有字體覆蓋的問題，幫我重新檢查後執行point 45
 63. migration有問題，Class "NunoMaduro\Collision\Adapters\Laravel\CollisionServiceProvider" not found，幫我重新檢查後執行point 45
+64. 完成以下功能
+    - 幫我多串連一個repo，https://github.com/13g7895123/finance0810.git，後續更新兩個都要有
+    - 目前用戶管理的資料還是假資料，幫我汰換成API的資料
+    - 執行point 45

@@ -53,7 +53,7 @@
               <!-- User Info -->
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="flex items-center">
-                  <img :src="user.avatar" :alt="user.name" class="w-10 h-10 rounded-full" />
+                  <img :src="user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=6366f1&color=fff`" :alt="user.name" class="w-10 h-10 rounded-full" />
                   <div class="ml-4">
                     <div class="text-sm font-medium text-gray-900 dark:text-white">{{ user.name }}</div>
                     <div class="text-sm text-gray-500 dark:text-gray-400">{{ user.email }}</div>
@@ -90,7 +90,7 @@
 
               <!-- Last Login -->
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                {{ formatDate(user.lastLogin) }}
+                {{ user.last_login_at ? formatDate(user.last_login_at) : '從未登入' }}
               </td>
 
               <!-- Actions -->
