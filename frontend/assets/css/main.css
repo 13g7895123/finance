@@ -54,29 +54,34 @@ body {
 }
 
 /* High contrast text colors for better readability on light background */
-.text-gray-900 {
-  color: #0f172a !important; /* Much darker slate color */
+.main-content-area .text-gray-900 {
+  color: #0f172a; /* Much darker slate color */
 }
 
-.text-gray-800 {
-  color: #1e293b !important; /* Darker slate color */
+.main-content-area .text-gray-800 {
+  color: #1e293b; /* Darker slate color */
 }
 
-.text-gray-700 {
-  color: #334155 !important; /* Dark gray */
+.main-content-area .text-gray-700 {
+  color: #334155; /* Dark gray */
 }
 
-.text-gray-600 {
-  color: #475569 !important; /* Medium-dark gray */
+.main-content-area .text-gray-600 {
+  color: #475569; /* Medium-dark gray */
 }
 
-.text-gray-500 {
-  color: #64748b !important; /* Medium gray */
+.main-content-area .text-gray-500 {
+  color: #64748b; /* Medium gray */
 }
 
 /* Main content text contrast improvements */
-h1, h2, h3, h4, h5, h6 {
-  color: #0f172a !important; /* Very dark for headers */
+.main-content-area h1, 
+.main-content-area h2, 
+.main-content-area h3, 
+.main-content-area h4, 
+.main-content-area h5, 
+.main-content-area h6 {
+  color: #0f172a; /* Very dark for headers */
 }
 
 /* Default text color removed to use theme default */
@@ -104,24 +109,29 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Stat cards and dashboard elements with high contrast */
-.card-modern .text-gray-900,
-.bg-white .text-gray-900 {
-  color: #0f172a !important;
+.main-content-area .card-modern .text-gray-900,
+.main-content-area .bg-white .text-gray-900 {
+  color: #0f172a;
 }
 
-.card-modern .text-gray-600,
-.bg-white .text-gray-600 {
-  color: #475569 !important;
+.main-content-area .card-modern .text-gray-600,
+.main-content-area .bg-white .text-gray-600 {
+  color: #475569;
 }
 
-.card-modern .text-gray-500,
-.bg-white .text-gray-500 {
-  color: #64748b !important;
+.main-content-area .card-modern .text-gray-500,
+.main-content-area .bg-white .text-gray-500 {
+  color: #64748b;
 }
 
 /* Ensure all text in cards has proper contrast */
-.card-modern h1, .card-modern h2, .card-modern h3, .card-modern h4, .card-modern h5, .card-modern h6 {
-  color: #0f172a !important;
+.main-content-area .card-modern h1, 
+.main-content-area .card-modern h2, 
+.main-content-area .card-modern h3, 
+.main-content-area .card-modern h4, 
+.main-content-area .card-modern h5, 
+.main-content-area .card-modern h6 {
+  color: #0f172a;
 }
 
 /* Default card text color removed to use theme default */
@@ -272,36 +282,41 @@ button[class*="border"] {
 }
 
 /* Table styling - light theme only */
-table,
-th,
-td {
-  border-color: #f3f4f6 !important;
-  background-color: #ffffff !important;
-  color: #0f172a !important;
+.main-content-area table {
+  border-color: #f3f4f6;
+  background-color: #ffffff;
 }
 
-/* Table headers */
-th {
-  background-color: #f8fafc !important;
-  color: #334155 !important;
+.main-content-area th {
+  background-color: #f8fafc;
+  color: #334155;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+.main-content-area td {
+  background-color: #ffffff;
+  color: #0f172a;
+  vertical-align: middle;
 }
 
 /* Table rows */
-tr:nth-child(even) {
-  background-color: #f8fafc !important;
+.main-content-area tr:nth-child(even) td {
+  background-color: #f8fafc;
 }
 
-tr:hover {
-  background-color: #f1f5f9 !important;
+.main-content-area tr:hover td {
+  background-color: #f1f5f9;
 }
 
 /* DataTable specific overrides */
-.datatable,
-.data-table,
-[class*="table"],
-.table-container {
-  background-color: #ffffff !important;
-  color: #0f172a !important;
+.main-content-area .datatable,
+.main-content-area .data-table,
+.main-content-area .table-container {
+  background-color: #ffffff;
+  color: #0f172a;
 }
 
 /* Remove all dark backgrounds from right-side content */

@@ -129,3 +129,5 @@
   `name`, `display_name`, `category`, `description`, `updated_at`, `created_a  
   t`) values (api, customer.view, 查看客戶資料, customer, 查看客戶資料, 2025-  
   08-10 13:14:49, 2025-08-10 13:14:49))   
+62. 用戶管理裡面有字體覆蓋的問題，幫我重新檢查後執行point 45
+63. migration有問題，Class "NunoMaduro\Collision\Adapters\Laravel\CollisionServiceProvider" not found，幫我重新檢查後執行point 45
