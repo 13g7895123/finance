@@ -35,7 +35,9 @@
       "Bash(npx nuxi:*)",
       "Bash(php artisan:*)",
       "Bash(/c/xampp/php/php.exe artisan key:generate)",
-      "Bash(where php)"
+      "Bash(where php)",
+      "Bash(docker restart:*)",
+      "Bash(docker exec:*)"
     ],
     "deny": []
   }

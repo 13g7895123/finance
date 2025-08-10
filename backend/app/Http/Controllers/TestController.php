@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Redis;
+// use Illuminate\Support\Facades\Redis;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -36,17 +36,19 @@ class TestController extends Controller
             ];
         }
 
-        // Test 2: Redis Connection (optional)
+        // Test 2: Cache System
         try {
-            Redis::ping();
-            $results['tests']['redis'] = [
-                'status' => 'ok',
-                'message' => 'Redis connected successfully'
+            cache()->put('test_key', 'test_value', 60);
+            $cachedValue = cache()->get('test_key');
+            $results['tests']['cache'] = [
+                'status' => $cachedValue === 'test_value' ? 'ok' : 'error',
+                'message' => $cachedValue === 'test_value' ? 'Cache system working' : 'Cache system failed'
             ];
+            cache()->forget('test_key');
         } catch (\Exception $e) {
-            $results['tests']['redis'] = [
+            $results['tests']['cache'] = [
                 'status' => 'warning',
-                'message' => 'Redis not available: ' . $e->getMessage()
+                'message' => 'Cache not available: ' . $e->getMessage()
             ];
         }
 

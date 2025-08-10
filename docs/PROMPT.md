@@ -96,3 +96,5 @@
 46. 完成以下功能
     - 後台的用戶管理、權限管理，先幫我整理出對應的call api路徑到conposable，並確認後台是否存在對應的API，有的話確認是否可以用，可以用的話直接串接，無法的話進行API生成
     - 執行point 45
+47. 目前local端已透過docker啟用了該專案，但是後端PORT 9219進去還是網頁無法正常運作，可以幫我確認一下問題在哪嗎
+48. laravel出現這個錯誤，"Undefined array key "lottery"，修復完成執行point 45
