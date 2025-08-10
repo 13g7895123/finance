@@ -57,19 +57,26 @@
         <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
           最新活動
         </h3>
-        <div class="space-y-4">
-          <div
-            v-for="activity in activities"
-            :key="activity.id"
-            class="flex items-start space-x-3"
-          >
-            <div class="w-2 h-2 mt-2 bg-primary-500 rounded-full"></div>
-            <div class="flex-1">
-              <p class="text-sm text-gray-900 dark:text-white">{{ activity.description }}</p>
-              <p class="text-xs text-gray-500 dark:text-gray-400">{{ activity.time }}</p>
+        <ClientOnly>
+          <div class="space-y-4">
+            <div
+              v-for="activity in activities"
+              :key="activity.id"
+              class="flex items-start space-x-3"
+            >
+              <div class="w-2 h-2 mt-2 bg-primary-500 rounded-full"></div>
+              <div class="flex-1">
+                <p class="text-sm text-gray-900 dark:text-white">{{ activity.description }}</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">{{ activity.time }}</p>
+              </div>
             </div>
           </div>
-        </div>
+          <template #fallback>
+            <div class="flex items-center justify-center py-8">
+              <div class="text-gray-500 dark:text-gray-400">載入中...</div>
+            </div>
+          </template>
+        </ClientOnly>
       </div>
     </div>
   </div>
@@ -87,10 +94,7 @@ definePageMeta({
   middleware: 'auth'
 })
 
-// 客戶端自動重定向到儀表板
-onMounted(() => {
-  navigateTo('/dashboard/analytics')
-})
+// 移除自動重定向以避免hydration mismatch
 
 const stats = [
   { name: '待處理案件', value: '23', icon: 'ClipboardDocumentListIcon' },
