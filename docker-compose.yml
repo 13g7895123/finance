@@ -13,6 +13,7 @@ services:
       - backend
     networks:
       - crm-network
+      - npm_network
     restart: unless-stopped
 
   backend:
@@ -53,6 +54,7 @@ services:
       - redis
     networks:
       - crm-network
+      - npm_network
     restart: unless-stopped
 
   mysql:
@@ -101,6 +103,8 @@ services:
 networks:
   crm-network:
     driver: bridge
+  npm_network:
+    external: true
 
 volumes:
   mysql_data:
