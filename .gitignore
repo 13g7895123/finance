@@ -57,6 +57,8 @@ docker-compose.override.yml
 
 # Documentation and project files
 CLAUDE.md
+docs/
+.claude/
 
 # Database
 *.sqlite
